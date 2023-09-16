@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyynn2v6e6k5"]
+
+[ext_resource type="Script" path="res://CharacterController.cs" id="1_6yp1b"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jd1kb"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_toh35"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_m30v1"]
+top_radius = 0.4
+bottom_radius = 0.4
+height = 0.2
+
+[node name="PlayableCharacter" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0840294, 0)
+script = ExtResource("1_6yp1b")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_jd1kb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_toh35")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.403948, 0.25235)
+mesh = SubResource("CylinderMesh_m30v1")

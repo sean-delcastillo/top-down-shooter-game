@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://deo7i4wymlv2c"]
+
+[ext_resource type="Script" path="res://CameraController.cs" id="1_e8peg"]
+[ext_resource type="Script" path="res://RaycastPicker.cs" id="2_bg4sq"]
+
+[node name="CameraRig" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, -0.372572, 19.5749, 2.15327)
+script = ExtResource("1_e8peg")
+
+[node name="RaycastPicker" type="Node3D" parent="."]
+script = ExtResource("2_bg4sq")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+current = true
+fov = 37.4
+size = 8.24
