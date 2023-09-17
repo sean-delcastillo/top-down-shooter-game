@@ -1,10 +1,13 @@
 using Godot;
 using System;
+using System.ComponentModel.Design;
 using System.Dynamic;
 
 public partial class CameraController : Node3D
 {
-    // TODO Capture and reemit raycast collision from RaycastPicker node
+    [Signal]
+    public delegate void MousePositionInWorldChangedEventHandler(Vector3 collision);
+
     [Export]
     public Node3D CameraTarget { get; set; }
 
@@ -18,47 +21,55 @@ public partial class CameraController : Node3D
     [Export]
     public float CameraSmooth
     {
-        get { return 1 / CameraFollowSlerpWeight; }
+        get { return 1 / _cameraFollowSlerpWeight; }
         set
         {
-            if (CameraSmooth != 0) { CameraFollowSlerpWeight = 1 / CameraSmooth; }
-            else { CameraFollowSlerpWeight = DEFAULT_SLERP_WEIGHT; }
+            if (CameraSmooth != 0) { _cameraFollowSlerpWeight = 1 / CameraSmooth; }
         }
     }
 
-    private const float DEFAULT_SLERP_WEIGHT = 1 / 5;
+    private const float RAYCAST_LENGTH = 100f;
+    private const float DEFAULT_SLERP_WEIGHT = 4f / 5f;
 
-    private Camera3D camera;
-    private float CameraFollowSlerpWeight;
-
-
-    [Signal]
-    public delegate void RayPickerCollisionEventHandler(Vector3 collision);
+    private Camera3D _camera;
+    private float _cameraFollowSlerpWeight = DEFAULT_SLERP_WEIGHT;
+    private Vector3 _mousePositionInWorld;
+    private bool _isValidMousePosition = false;
 
     public override void _Ready()
     {
-        camera = GetNode<Camera3D>("Camera3D");
-
-        RaycastPicker RaycastPicker = GetNode<RaycastPicker>("RaycastPicker");
-        RaycastPicker.Set("Camera", camera);
-        RaycastPicker.RayPickerCollision += OnRaycastPickerRayPickerCollision; // I dont understand why this isnt working
-    }
-
-    private void OnRaycastPickerRayPickerCollision(Vector3 position)
-    {
-        GD.Print(position);
+        _camera = GetNode<Camera3D>("Camera3D");
     }
 
     public override void _PhysicsProcess(double delta)
     {
         if (CameraTarget != null)
         {
-            Position = GetCameraPosition();
+            UpdateCameraPosition();
             LookAt(CameraTarget.Position);
+        }
+
+        UpdateMousePositionInWorld();
+        EmitSignal(SignalName.MousePositionInWorldChanged, _mousePositionInWorld);
+    }
+
+    private void UpdateMousePositionInWorld()
+    {
+        var from = _camera.ProjectRayOrigin(GetViewport().GetMousePosition());
+        var to = from + _camera.ProjectRayNormal(GetViewport().GetMousePosition()) * RAYCAST_LENGTH;
+
+        var spaceState = GetWorld3D().DirectSpaceState;
+        var query = PhysicsRayQueryParameters3D.Create(from, to);
+        var result = spaceState.IntersectRay(query);
+
+        if (result.ContainsKey("position"))
+        {
+            _mousePositionInWorld = (Vector3)result["position"];
         }
     }
 
-    private Vector3 GetCameraPosition()
+
+    private void UpdateCameraPosition()
     {
         var DesiredPosition = new Vector3
         (
@@ -66,6 +77,7 @@ public partial class CameraController : Node3D
             CameraTarget.Position.Y + YOffset,
             CameraTarget.Position.Z + ZOffset
         );
-        return Position.Slerp(DesiredPosition, CameraFollowSlerpWeight);
+
+        Position = DesiredPosition;
     }
 }
