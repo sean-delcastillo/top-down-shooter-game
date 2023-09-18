@@ -1,7 +1,5 @@
 using Godot;
 using System;
-using System.ComponentModel.Design;
-using System.Dynamic;
 
 public partial class CameraController : Node3D
 {
