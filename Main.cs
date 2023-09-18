@@ -5,7 +5,6 @@ public partial class Main : Node3D
 {
 	private CameraController _cameraRig;
 	private KeyboardCharacterController _player;
-
 	private EnemyCharacterController _enemy;
 
 	public override void _Ready()
