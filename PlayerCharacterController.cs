@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class KeyboardCharacterController : CharacterBody3D
+public partial class PlayerCharacterController : CharacterBody3D
 {
 	[Export]
 	public float SPEED = 5f;
@@ -11,12 +11,40 @@ public partial class KeyboardCharacterController : CharacterBody3D
 	private float _gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
 	private Vector3 _gravityVector = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector");
 
+	private RayCast3D _gunRay;
+
+	public override void _Ready()
+	{
+		_gunRay = GetNode<RayCast3D>("AwarenessVision/GunRay");
+	}
+
+	public override void _Process(double delta)
+	{
+		if (Input.IsActionJustPressed("LeftMouseButton"))
+		{
+			if (_gunRay.IsColliding())
+			{
+				Node3D target = (Node3D)_gunRay.GetCollider();
+				if (target.IsInGroup("Enemies"))
+				{
+					var enemyTarget = target as EnemyCharacterController;
+					enemyTarget.Call("TakeDamage", 50);
+				}
+			}
+		}
+	}
+
 	public override void _PhysicsProcess(double delta)
 	{
 		UpdateVelocityVectors();
 		UpdateMouseLook();
 
 		MoveAndSlide();
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton mouseButton && mouseButton.IsActionPressed("LeftMouseButton")) { }
 	}
 
 	public void UpdateMousePositionInWorld(Vector3 position)

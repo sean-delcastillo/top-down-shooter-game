@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://dyynn2v6e6k5"]
 
-[ext_resource type="Script" path="res://KeyboardCharacterController.cs" id="1_6yp1b"]
+[ext_resource type="Script" path="res://PlayerCharacterController.cs" id="1_41yij"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jd1kb"]
 
@@ -42,7 +42,7 @@ points = PackedVector3Array(0.457871, 0.198079, 0.0157824, -0.48874, -0.0916874,
 
 [node name="PlayableCharacter" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0840294, 0)
-script = ExtResource("1_6yp1b")
+script = ExtResource("1_41yij")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 target_desired_distance = 0.2
@@ -83,12 +83,12 @@ mesh = SubResource("BoxMesh_pxcfk")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000416636, 0.407179, -0.667586)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AwarenessVision/VisionCone"]
-transform = Transform3D(5, 0, 0, 0, -2.18557e-07, -5, 0, 5, -2.18557e-07, 0.00467373, 0.0010148, -4.99893)
+transform = Transform3D(5, 0, 0, 0, -2.18557e-07, -5, 0, 5, -2.18557e-07, 0.00467373, 0.00101483, -5.01668)
 shape = SubResource("ConvexPolygonShape3D_8runu")
 
 [node name="GunRay" type="RayCast3D" parent="AwarenessVision"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.313023, 0.147415, -1.30706)
-target_position = Vector3(0, 0, -0.5)
+target_position = Vector3(0, 0, -100)
 debug_shape_custom_color = Color(0.933333, 0.858824, 0, 1)
 debug_shape_thickness = 5
 
