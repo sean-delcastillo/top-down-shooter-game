@@ -440,6 +440,5 @@ CameraTarget = NodePath("../PlayerCharacter")
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("2_m8smv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0200911, 1.08479, 0.240679)
-SPEED = null
 
 [node name="EnemyCharacter" parent="." instance=ExtResource("9_jsps2")]
