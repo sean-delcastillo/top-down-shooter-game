@@ -13,6 +13,8 @@ public partial class PlayerCharacterController : CharacterBody3D
 
 	private RayCast3D _gunRay;
 
+	private PackedScene _muzzleFlash = GD.Load<PackedScene>("res://muzzle_flash.tscn");
+
 	public override void _Ready()
 	{
 		_gunRay = GetNode<RayCast3D>("AwarenessVision/GunRay");
@@ -22,6 +24,7 @@ public partial class PlayerCharacterController : CharacterBody3D
 	{
 		if (Input.IsActionJustPressed("LeftMouseButton"))
 		{
+			MuzzleFlash();
 			if (_gunRay.IsColliding())
 			{
 				Node3D target = (Node3D)_gunRay.GetCollider();
@@ -45,6 +48,12 @@ public partial class PlayerCharacterController : CharacterBody3D
 	public override void _Input(InputEvent @event)
 	{
 		if (@event is InputEventMouseButton mouseButton && mouseButton.IsActionPressed("LeftMouseButton")) { }
+	}
+
+	public void MuzzleFlash() {
+		var muzzleFlash = _muzzleFlash.Instantiate<Node3D>();
+		muzzleFlash.Position = _gunRay.GlobalPosition;
+		GetTree().Root.AddChild(muzzleFlash);
 	}
 
 	public void UpdateMousePositionInWorld(Vector3 position)

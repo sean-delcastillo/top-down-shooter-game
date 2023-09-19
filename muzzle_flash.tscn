@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://ca45r8mu4vr4f"]
+
+[ext_resource type="Script" path="res://MuzzleFlash.cs" id="1_1aft3"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_r3thi"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_456so"]
+albedo_color = Color(1, 0.862745, 0.0823529, 1)
+metallic_specular = 0.0
+roughness = 0.1
+emission_enabled = true
+emission = Color(0.854902, 0.478431, 0.137255, 1)
+
+[node name="MuzzleFlash" type="Node3D"]
+script = ExtResource("1_1aft3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = SubResource("SphereMesh_r3thi")
+surface_material_override/0 = SubResource("StandardMaterial3D_456so")
