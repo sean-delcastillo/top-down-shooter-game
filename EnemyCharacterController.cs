@@ -3,16 +3,9 @@ using System;
 
 public partial class EnemyCharacterController : CharacterBody3D
 {
-	[Signal]
-	public delegate void EnemyDeathOccuredEventHandler(Vector3 position, PackedScene sceneToSpawn);
-
 	private double _health = 200;
 
 	private PackedScene _deathSpriteAnimation = GD.Load<PackedScene>("res://death_animation_sprite.tscn");
-
-	public override void _Ready()
-	{
-	}
 
 	public override void _Process(double delta)
 	{
@@ -29,8 +22,9 @@ public partial class EnemyCharacterController : CharacterBody3D
 
 	private void Die()
 	{
-		EmitSignal(SignalName.EnemyDeathOccured, Position, _deathSpriteAnimation);
-
+		var deathAnimation = _deathSpriteAnimation.Instantiate() as Node3D;
+		deathAnimation.GlobalPosition = GlobalPosition;
+		GetParent().AddChild(deathAnimation);
 		QueueFree();
 	}
 }

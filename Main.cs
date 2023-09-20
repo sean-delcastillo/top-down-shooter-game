@@ -14,7 +14,6 @@ public partial class Main : Node3D
 		_enemy = GetNode<EnemyCharacterController>("EnemyCharacter");
 
 		_cameraRig.MousePositionInWorldChanged += SendNewMousePositionToPlayer;
-		_enemy.EnemyDeathOccured += HandleEnemyDeath;
 	}
 
 	private void SendNewMousePositionToPlayer(Vector3 position)

@@ -50,32 +50,39 @@ target_desired_distance = 0.2
 [node name="BodyHitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_jd1kb")
 
-[node name="Meshes" type="Node3D" parent="."]
+[node name="BodyMeshes" type="Node3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.0840294, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BodyMeshes"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, -0.0168059, 0)
 mesh = SubResource("CapsuleMesh_toh35")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_etd7v")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Meshes/MeshInstance3D"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="BodyMeshes/MeshInstance3D"]
 transform = Transform3D(0.803418, 0, 0, 0, 0.251419, 0, 0, 0, 0.803418, 0, 0.403948, -0.26445)
 mesh = SubResource("CapsuleMesh_rqeis")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_h27fb")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes/MeshInstance3D/MeshInstance3D2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BodyMeshes/MeshInstance3D/MeshInstance3D2"]
 transform = Transform3D(1, 0, 0, 0, 0.956421, 0, 0, 0, 0.965868, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_lwsl0")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes/MeshInstance3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BodyMeshes/MeshInstance3D"]
 transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.113202, 0.382)
 mesh = SubResource("CapsuleMesh_wupr4")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Meshes/MeshInstance3D"]
-transform = Transform3D(0.125652, 0, 0, 0, 0.113799, 0, 0, 0, 1, 0.311083, 0.147942, -0.808802)
+[node name="Gun" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.125652, 0, 0, 0, 0.113799, 0, 0, 0, 1, 0.149052, 0.0187043, -0.941065)
 mesh = SubResource("BoxMesh_pxcfk")
+skeleton = NodePath("../BodyMeshes/MeshInstance3D")
+
+[node name="GunRay" type="RayCast3D" parent="Gun"]
+transform = Transform3D(7.95849, 0, 0, 0, 8.78742, 0, 0, 0, 1, -0.00348639, -0.000451088, -0.498258)
+target_position = Vector3(0, 0, -100)
+debug_shape_custom_color = Color(0.933333, 0.858824, 0, 1)
+debug_shape_thickness = 5
 
 [node name="AwarenessVision" type="Node3D" parent="."]
 
@@ -85,12 +92,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000416636, 0.407179, -0.667
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AwarenessVision/VisionCone"]
 transform = Transform3D(5, 0, 0, 0, -2.18557e-07, -5, 0, 5, -2.18557e-07, 0.00467373, 0.00101483, -5.01668)
 shape = SubResource("ConvexPolygonShape3D_8runu")
-
-[node name="GunRay" type="RayCast3D" parent="AwarenessVision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.313023, 0.147415, -1.30706)
-target_position = Vector3(0, 0, -100)
-debug_shape_custom_color = Color(0.933333, 0.858824, 0, 1)
-debug_shape_thickness = 5
 
 [node name="AwarenessSphere" type="Area3D" parent="AwarenessVision"]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.0840294, 0)

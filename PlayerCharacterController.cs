@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Runtime;
 
 public partial class PlayerCharacterController : CharacterBody3D
 {
@@ -7,32 +8,33 @@ public partial class PlayerCharacterController : CharacterBody3D
 	public float SPEED = 5f;
 
 	private Vector3 _mousePositionInWorld;
-
 	private float _gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
 	private Vector3 _gravityVector = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector");
-
 	private RayCast3D _gunRay;
-
-	private PackedScene _muzzleFlash = GD.Load<PackedScene>("res://muzzle_flash.tscn");
+	private PackedScene _bulletTrail = GD.Load<PackedScene>("res://bullet_trail.tscn");
 
 	public override void _Ready()
 	{
-		_gunRay = GetNode<RayCast3D>("AwarenessVision/GunRay");
+		_gunRay = GetNode<RayCast3D>("Gun/GunRay");
 	}
 
 	public override void _Process(double delta)
 	{
 		if (Input.IsActionJustPressed("LeftMouseButton"))
 		{
-			MuzzleFlash();
 			if (_gunRay.IsColliding())
 			{
-				Node3D target = (Node3D)_gunRay.GetCollider();
+				BulletTrail(_gunRay.GetCollisionPoint());
+				var target = _gunRay.GetCollider() as Node3D;
 				if (target.IsInGroup("Enemies"))
 				{
 					var enemyTarget = target as EnemyCharacterController;
 					enemyTarget.Call("TakeDamage", 50);
 				}
+			}
+			else
+			{
+				BulletTrail(_gunRay.GlobalPosition + Transform.Basis * _gunRay.TargetPosition);
 			}
 		}
 	}
@@ -45,15 +47,11 @@ public partial class PlayerCharacterController : CharacterBody3D
 		MoveAndSlide();
 	}
 
-	public override void _Input(InputEvent @event)
+	public void BulletTrail(Vector3 to)
 	{
-		if (@event is InputEventMouseButton mouseButton && mouseButton.IsActionPressed("LeftMouseButton")) { }
-	}
-
-	public void MuzzleFlash() {
-		var muzzleFlash = _muzzleFlash.Instantiate<Node3D>();
-		muzzleFlash.Position = _gunRay.GlobalPosition;
-		GetTree().Root.AddChild(muzzleFlash);
+		var bulletTrail = _bulletTrail.Instantiate<BulletTrail>();
+		bulletTrail.Init(_gunRay.GlobalPosition, to);
+		GetTree().Root.AddChild(bulletTrail);
 	}
 
 	public void UpdateMousePositionInWorld(Vector3 position)

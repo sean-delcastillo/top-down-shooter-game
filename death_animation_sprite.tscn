@@ -1,6 +1,7 @@
-[gd_scene load_steps=20 format=3 uid="uid://ushku02k36cw"]
+[gd_scene load_steps=21 format=3 uid="uid://ushku02k36cw"]
 
 [ext_resource type="Texture2D" uid="uid://ovnct1q7wimp" path="res://realistic_explosion_sprite_sheet.png" id="1_ktwdt"]
+[ext_resource type="Script" path="res://DeathAnimationSprite.cs" id="1_p1tti"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_esw3u"]
 atlas = ExtResource("1_ktwdt")
@@ -132,11 +133,14 @@ animations = [{
 }],
 "loop": false,
 "name": &"default",
-"speed": 12.0
+"speed": 18.0
 }]
 
-[node name="DeathAnimationSprite" type="AnimatedSprite3D"]
-transform = Transform3D(5, 0, 0, 0, -2.18557e-07, -5, 0, 5, -2.18557e-07, 0.0756562, -0.0752532, -1.42718)
+[node name="Marker3D" type="Marker3D"]
+script = ExtResource("1_p1tti")
+
+[node name="DeathAnimationSprite" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, -1.31134e-07, -3, 0, 3, -1.31134e-07, 0, 0, 0)
 sprite_frames = SubResource("SpriteFrames_j6ogb")
 frame = 18
 frame_progress = 1.0

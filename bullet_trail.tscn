@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuolk5evde87q"]
+
+[ext_resource type="Script" path="res://BulletTrail.cs" id="1_ws1fx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pen5i"]
+transparency = 1
+albedo_color = Color(0.831373, 0.635294, 0, 1)
+emission_enabled = true
+emission = Color(0.980392, 0.780392, 0, 1)
+emission_energy_multiplier = 4.0
+
+[node name="BulletTrail" type="MeshInstance3D"]
+material_override = SubResource("StandardMaterial3D_pen5i")
+script = ExtResource("1_ws1fx")
