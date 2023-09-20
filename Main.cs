@@ -20,16 +20,4 @@ public partial class Main : Node3D
 	{
 		_player.Call("UpdateMousePositionInWorld", position);
 	}
-
-	private void HandleEnemyDeath(Vector3 position, PackedScene deathAnimation)
-	{
-		var animation = deathAnimation.Instantiate() as AnimatedSprite3D;
-		AddChild(animation);
-		animation.Position = position;
-		animation.Play();
-		if (!animation.IsPlaying())
-		{
-			animation.QueueFree();
-		}
-	}
 }

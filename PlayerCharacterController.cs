@@ -30,6 +30,7 @@ public partial class PlayerCharacterController : CharacterBody3D
 				{
 					var enemyTarget = target as EnemyCharacterController;
 					enemyTarget.Call("TakeDamage", 50);
+					enemyTarget.Call("DamageAtLocation", _gunRay.GetCollisionPoint(), _gunRay.GetCollisionNormal());
 				}
 			}
 			else
@@ -56,7 +57,7 @@ public partial class PlayerCharacterController : CharacterBody3D
 
 	public void UpdateMousePositionInWorld(Vector3 position)
 	{
-		position.Y = Position.Y;            // make mouse position at same height as character
+		position.Y = Position.Y;            
 		_mousePositionInWorld = position;
 	}
 

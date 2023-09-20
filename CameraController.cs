@@ -66,7 +66,6 @@ public partial class CameraController : Node3D
         }
     }
 
-
     private void UpdateCameraPosition()
     {
         var DesiredPosition = new Vector3
