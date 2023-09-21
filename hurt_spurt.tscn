@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://cfuxymtmob0r4"]
+[gd_scene load_steps=7 format=3 uid="uid://cfuxymtmob0r4"]
+
+[ext_resource type="Script" path="res://HurtSpurt.cs" id="1_yctul"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ybphu"]
 
@@ -25,9 +27,10 @@ scale_curve = SubResource("CurveTexture_055x7")
 radius = 0.1
 height = 0.2
 
-[node name="Node3D" type="Node3D"]
+[node name="HurtSpurt" type="Node3D"]
+script = ExtResource("1_yctul")
 
-[node name="HurtSpurt" type="GPUParticles3D" parent="."]
+[node name="HurtSpurtParticles" type="GPUParticles3D" parent="."]
 material_override = SubResource("StandardMaterial3D_ybphu")
 amount = 10
 explosiveness = 0.9
