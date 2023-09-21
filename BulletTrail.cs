@@ -9,10 +9,6 @@ public partial class BulletTrail : MeshInstance3D
 		GetTree().CreateTimer(TimeToLive).Timeout += QueueFree;
 	}
 
-	public override void _Process(double delta)
-	{
-	}
-
 	public void Init(Vector3 from, Vector3 to)
 	{
 		var drawMesh = new ImmediateMesh();

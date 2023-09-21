@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://c2sl726g4jpqs"]
+[gd_scene load_steps=12 format=3 uid="uid://c2sl726g4jpqs"]
 
 [ext_resource type="Script" path="res://EnemyCharacterController.cs" id="1_lnew0"]
+[ext_resource type="Script" path="res://VisionAwareness.cs" id="2_0g3ag"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_td06u"]
 
@@ -26,27 +27,45 @@ albedo_color = Color(0.109804, 0.266667, 0.603922, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_441mf"]
 material = SubResource("StandardMaterial3D_6j5h2")
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_qpjqg"]
+radius = 10.0
+
 [node name="EnemyCharacter" type="CharacterBody3D" groups=["Enemies"]]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 script = ExtResource("1_lnew0")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="BodyCollision" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_td06u")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="BodyMeshes" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_3v0fu")
 surface_material_override/0 = SubResource("StandardMaterial3D_yyo3h")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="BodyMeshes"]
 transform = Transform3D(0.803418, 0, 0, 0, 0.251419, 0, 0, 0, 0.803418, 0, 0.403948, -0.26445)
 mesh = SubResource("CapsuleMesh_udouw")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_6y4t6")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D/MeshInstance3D2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BodyMeshes/MeshInstance3D2"]
 transform = Transform3D(1, 0, 0, 0, 0.956421, 0, 0, 0, 0.965868, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_at223")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BodyMeshes"]
 transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.113202, 0.382)
 mesh = SubResource("CapsuleMesh_441mf")
+
+[node name="VisionAwareness" type="Node3D" parent="." node_paths=PackedStringArray("AwarenessArea", "VisionCast")]
+script = ExtResource("2_0g3ag")
+AwarenessArea = NodePath("AwarenessArea")
+VisionCast = NodePath("VisionCast")
+
+[node name="VisionCast" type="RayCast3D" parent="VisionAwareness"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.73972e-08, 0.399234, -0.653258)
+target_position = Vector3(0, 0, -1)
+
+[node name="AwarenessArea" type="Area3D" parent="VisionAwareness"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisionAwareness/AwarenessArea"]
+shape = SubResource("SphereShape3D_qpjqg")

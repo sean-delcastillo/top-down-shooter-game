@@ -3,11 +3,11 @@ using System;
 
 public partial class HurtSpurt : Node3D
 {
+	private GpuParticles3D _particle;
+
 	public override void _Ready()
 	{
-	}
-
-	public override void _Process(double delta)
-	{
+		_particle = GetNode<GpuParticles3D>("HurtSpurtParticles");
+		GetTree().CreateTimer(_particle.Lifetime).Timeout += QueueFree;
 	}
 }

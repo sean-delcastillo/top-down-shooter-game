@@ -3,9 +3,10 @@
 [ext_resource type="Script" path="res://HurtSpurt.cs" id="1_yctul"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ybphu"]
+albedo_color = Color(1, 0.152941, 0.14902, 1)
 
 [sub_resource type="Curve" id="Curve_wi4e3"]
-_data = [Vector2(0, 1), 0.0, 1.4, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.214035, 0, 0, Vector2(0.500728, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_055x7"]
@@ -14,9 +15,9 @@ curve = SubResource("Curve_wi4e3")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_01nio"]
 lifetime_randomness = 0.1
 emission_shape = 1
-emission_sphere_radius = 0.5
+emission_sphere_radius = 0.1
 direction = Vector3(0, 0, -1)
-gravity = Vector3(0, -9.6, 0)
+gravity = Vector3(0, -20, 0)
 initial_velocity_min = 5.0
 initial_velocity_max = 5.0
 damping_min = 1.0
@@ -33,6 +34,7 @@ script = ExtResource("1_yctul")
 [node name="HurtSpurtParticles" type="GPUParticles3D" parent="."]
 material_override = SubResource("StandardMaterial3D_ybphu")
 amount = 10
-explosiveness = 0.9
+explosiveness = 0.95
+randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_01nio")
 draw_pass_1 = SubResource("SphereMesh_6xwx6")

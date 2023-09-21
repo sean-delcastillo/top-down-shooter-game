@@ -1,42 +1,23 @@
 using Godot;
 using System;
-using System.Runtime;
 
 public partial class PlayerCharacterController : CharacterBody3D
 {
 	[Export]
-	public float SPEED = 5f;
+	public float Speed = 5f;
+
+	[Export]
+	public CharacterWeapon Weapon;
 
 	private Vector3 _mousePositionInWorld;
 	private float _gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
 	private Vector3 _gravityVector = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector");
-	private RayCast3D _gunRay;
-	private PackedScene _bulletTrail = GD.Load<PackedScene>("res://bullet_trail.tscn");
-
-	public override void _Ready()
-	{
-		_gunRay = GetNode<RayCast3D>("Gun/GunRay");
-	}
 
 	public override void _Process(double delta)
 	{
 		if (Input.IsActionJustPressed("LeftMouseButton"))
 		{
-			if (_gunRay.IsColliding())
-			{
-				BulletTrail(_gunRay.GetCollisionPoint());
-				var target = _gunRay.GetCollider() as Node3D;
-				if (target.IsInGroup("Enemies"))
-				{
-					var enemyTarget = target as EnemyCharacterController;
-					enemyTarget.Call("TakeDamage", 50);
-					enemyTarget.Call("DamageAtLocation", _gunRay.GetCollisionPoint(), _gunRay.GetCollisionNormal());
-				}
-			}
-			else
-			{
-				BulletTrail(_gunRay.GlobalPosition + Transform.Basis * _gunRay.TargetPosition);
-			}
+			Weapon.PrimaryAction();
 		}
 	}
 
@@ -48,16 +29,9 @@ public partial class PlayerCharacterController : CharacterBody3D
 		MoveAndSlide();
 	}
 
-	public void BulletTrail(Vector3 to)
-	{
-		var bulletTrail = _bulletTrail.Instantiate<BulletTrail>();
-		bulletTrail.Init(_gunRay.GlobalPosition, to);
-		GetTree().Root.AddChild(bulletTrail);
-	}
-
 	public void UpdateMousePositionInWorld(Vector3 position)
 	{
-		position.Y = Position.Y;            
+		position.Y = Position.Y;
 		_mousePositionInWorld = position;
 	}
 
@@ -74,7 +48,7 @@ public partial class PlayerCharacterController : CharacterBody3D
 		if (movementDirection != Vector3.Zero)
 		{
 			var newVelocity = new Vector3(movementDirection.X, 0, movementDirection.Z);
-			Velocity = newVelocity * SPEED;
+			Velocity = newVelocity * Speed;
 		}
 		else
 		{
