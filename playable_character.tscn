@@ -37,7 +37,6 @@ metallic_specular = 0.88
 material = SubResource("StandardMaterial3D_wcsci")
 
 [node name="PlayableCharacter" type="CharacterBody3D" node_paths=PackedStringArray("Weapon")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0840294, 0)
 script = ExtResource("1_41yij")
 Weapon = NodePath("Weapon")
 
@@ -84,7 +83,6 @@ debug_shape_custom_color = Color(0.639216, 0.403922, 0, 0.223529)
 debug_shape_thickness = 5
 
 [node name="GunMesh" type="MeshInstance3D" parent="Weapon"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_pxcfk")
 skeleton = NodePath("../../BodyMeshes/MeshInstance3D")
 

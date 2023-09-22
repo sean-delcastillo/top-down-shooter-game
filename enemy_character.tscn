@@ -56,10 +56,11 @@ mesh = SubResource("CapsuleMesh_at223")
 transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.113202, 0.382)
 mesh = SubResource("CapsuleMesh_441mf")
 
-[node name="VisionAwareness" type="Node3D" parent="." node_paths=PackedStringArray("AwarenessArea", "VisionCast")]
+[node name="VisionAwareness" type="Node3D" parent="." node_paths=PackedStringArray("AwarenessArea", "VisionCast", "Self")]
 script = ExtResource("2_0g3ag")
 AwarenessArea = NodePath("AwarenessArea")
 VisionCast = NodePath("VisionCast")
+Self = NodePath("..")
 
 [node name="VisionCast" type="RayCast3D" parent="VisionAwareness"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.73972e-08, 0.399234, -0.653258)
