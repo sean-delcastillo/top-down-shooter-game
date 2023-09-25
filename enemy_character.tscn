@@ -1,7 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://c2sl726g4jpqs"]
+[gd_scene load_steps=14 format=3 uid="uid://c2sl726g4jpqs"]
 
 [ext_resource type="Script" path="res://EnemyCharacterController.cs" id="1_lnew0"]
 [ext_resource type="Script" path="res://VisionAwareness.cs" id="2_0g3ag"]
+[ext_resource type="Resource" uid="uid://dc6l0balx73uq" path="res://character_information.tres" id="2_t3kl2"]
+[ext_resource type="PackedScene" uid="uid://dwrplvq7pbtkw" path="res://weapon.tscn" id="4_slwa0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_td06u"]
 
@@ -30,8 +32,10 @@ material = SubResource("StandardMaterial3D_6j5h2")
 [sub_resource type="SphereShape3D" id="SphereShape3D_qpjqg"]
 radius = 10.0
 
-[node name="EnemyCharacter" type="CharacterBody3D" groups=["Enemies"]]
+[node name="EnemyCharacter" type="CharacterBody3D" node_paths=PackedStringArray("Weapon") groups=["Enemies"]]
 script = ExtResource("1_lnew0")
+CharacterInformation = ExtResource("2_t3kl2")
+Weapon = NodePath("Weapon")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
@@ -56,17 +60,44 @@ mesh = SubResource("CapsuleMesh_at223")
 transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.113202, 0.382)
 mesh = SubResource("CapsuleMesh_441mf")
 
-[node name="VisionAwareness" type="Node3D" parent="." node_paths=PackedStringArray("AwarenessArea", "VisionCast", "Self")]
+[node name="VisionAwareness" type="Node3D" parent="." node_paths=PackedStringArray("AwarenessArea", "VisionCast", "FrontCast", "Self")]
 script = ExtResource("2_0g3ag")
 AwarenessArea = NodePath("AwarenessArea")
 VisionCast = NodePath("VisionCast")
+FrontCast = NodePath("ForwardCast")
 Self = NodePath("..")
 
+[node name="ForwardCast" type="RayCast3D" parent="VisionAwareness"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.399498, -0.652044)
+target_position = Vector3(0, 0, -9)
+
 [node name="VisionCast" type="RayCast3D" parent="VisionAwareness"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.73972e-08, 0.399234, -0.653258)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.73972e-08, 0.399234, -0.669046)
 target_position = Vector3(0, 0, -1)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="VisionAwareness/VisionCast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.892236, 0)
+light_color = Color(1, 0.490196, 0.235294, 1)
+light_energy = 5.0
+light_indirect_energy = 0.0
+shadow_enabled = true
+spot_range = 9.42044
+spot_attenuation = 1e-05
+spot_angle_attenuation = 1e-05
 
 [node name="AwarenessArea" type="Area3D" parent="VisionAwareness"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisionAwareness/AwarenessArea"]
 shape = SubResource("SphereShape3D_qpjqg")
+
+[node name="ForwardDebug" type="RayCast3D" parent="VisionAwareness"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.522347)
+target_position = Vector3(0, 0, -1)
+debug_shape_custom_color = Color(0.509804, 0.682353, 0.207843, 1)
+
+[node name="ContactDebug" type="RayCast3D" parent="VisionAwareness"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.530058)
+target_position = Vector3(0, 0, -1)
+debug_shape_custom_color = Color(1, 0.87451, 0, 1)
+
+[node name="Weapon" parent="." instance=ExtResource("4_slwa0")]

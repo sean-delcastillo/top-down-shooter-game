@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Main : Node3D
+public partial class World : Node3D
 {
 	private CameraController _cameraRig;
 	private PlayerCharacterController _player;
@@ -11,7 +11,6 @@ public partial class Main : Node3D
 	{
 		_cameraRig = GetNode<CameraController>("CameraRig");
 		_player = GetNode<PlayerCharacterController>("PlayerCharacter");
-		_enemy = GetNode<EnemyCharacterController>("EnemyCharacter");
 
 		_cameraRig.MousePositionInWorldChanged += SendNewMousePositionToPlayer;
 	}

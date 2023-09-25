@@ -4,10 +4,9 @@ using System;
 public partial class PlayerCharacterController : CharacterBody3D
 {
 	[Export]
-	public float Speed = 5f;
-
+	public CharacterInformation CharacterInformation { set; get; }
 	[Export]
-	public CharacterWeapon Weapon;
+	public CharacterWeapon Weapon { set; get; }
 
 	private Vector3 _mousePositionInWorld;
 	private float _gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
@@ -19,6 +18,8 @@ public partial class PlayerCharacterController : CharacterBody3D
 		{
 			Weapon.PrimaryAction();
 		}
+
+		CheckIfDead();
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -27,6 +28,11 @@ public partial class PlayerCharacterController : CharacterBody3D
 		UpdateMouseLook();
 
 		MoveAndSlide();
+	}
+
+	public void TakeDamage(double damage)
+	{
+		CharacterInformation.Health -= damage;
 	}
 
 	public void UpdateMousePositionInWorld(Vector3 position)
@@ -48,7 +54,7 @@ public partial class PlayerCharacterController : CharacterBody3D
 		if (movementDirection != Vector3.Zero)
 		{
 			var newVelocity = new Vector3(movementDirection.X, 0, movementDirection.Z);
-			Velocity = newVelocity * Speed;
+			Velocity = newVelocity * CharacterInformation.MovementSpeed;
 		}
 		else
 		{
@@ -62,5 +68,21 @@ public partial class PlayerCharacterController : CharacterBody3D
 
 			Velocity += velocityWithGravity;
 		}
+	}
+
+	private void CheckIfDead()
+	{
+		if (CharacterInformation.Health <= 0)
+		{
+			Die();
+		}
+	}
+
+	private void Die()
+	{
+		var deathAnimation = CharacterInformation.DeathAnimation.Instantiate() as Node3D;
+		deathAnimation.GlobalPosition = GlobalPosition;
+		GetParent().AddChild(deathAnimation);
+		QueueFree();
 	}
 }

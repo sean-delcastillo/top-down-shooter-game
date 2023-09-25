@@ -1,7 +1,7 @@
 using Godot;
-using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public partial class VisionAwareness : Node3D
 {
@@ -10,10 +10,19 @@ public partial class VisionAwareness : Node3D
 	[Export]
 	public RayCast3D VisionCast { set; get; }
 	[Export]
+	public RayCast3D FrontCast { set; get; }
+	[Export]
 	public CharacterBody3D Self { set; get; }
+	[Export]
+	public double FieldOfView { set; get; } = 120;
+	/*
+	[Export]
+	public double CloseAwarenessDistance { set; get; } = 1;
+	*/
+	public List<Node3D> BodiesInAwarenessRange { set; get; } = new();
+	public List<Node3D> BodiesInVisualContact { set; get; } = new();
 
-	private List<Node3D> _bodiesInAwarenessRange = new();
-	private List<Node3D> _bodiesInVisualContact = new();
+	public Node3D Facing { set; get; } = null;
 
 	public override void _Ready()
 	{
@@ -23,30 +32,78 @@ public partial class VisionAwareness : Node3D
 
 	public override void _Process(double delta)
 	{
-		for (int i = 0; i < _bodiesInAwarenessRange.Count; i++)
-		{
-			VisionCast.TargetPosition = _bodiesInAwarenessRange[i].GlobalPosition * GlobalTransform;
-			if (VisionCast.GetCollider() as Node3D == _bodiesInAwarenessRange[i])
-			{
-				_bodiesInVisualContact.Add(_bodiesInAwarenessRange[i]);
-			}
-		}
+		CheckLineOfSightToAwarenessRangeObjects();
+		CheckLineOfSightToVisualContactObjects();
+		UpdateFacing();
 
-		for (int i = 0; i < _bodiesInVisualContact.Count; i++)
+		Transform = Transform.Orthonormalized();
+	}
+
+	private void CheckLineOfSightToAwarenessRangeObjects()
+	{
+		for (int i = 0; i < BodiesInAwarenessRange.Count; i++)
 		{
-			VisionCast.TargetPosition = _bodiesInVisualContact[i].GlobalPosition * GlobalTransform;
-			if (VisionCast.GetCollider() as Node3D != _bodiesInVisualContact[i])
+			var bodyPosition = BodiesInAwarenessRange[i].GlobalPosition;
+			var bodyLocalPosition = bodyPosition * GlobalTransform;
+			VisionCast.TargetPosition = bodyLocalPosition;
+			VisionCast.ForceRaycastUpdate();
+			if (!IsInFov(bodyLocalPosition)) { return; }
+			if (VisionCast.GetCollider() as Node3D == BodiesInAwarenessRange[i])
 			{
-				_bodiesInVisualContact.Remove(_bodiesInVisualContact[i]);
+				BodiesInVisualContact.Add(BodiesInAwarenessRange[i]);
 			}
 		}
 	}
 
-	public override void _PhysicsProcess(double delta)
-	{
-		if (_bodiesInVisualContact.Count > 0)
+	/*
+		private bool IsInCloseAwarenessRange(Vector3 position)
 		{
-			GetParent<Node3D>().LookAt(_bodiesInVisualContact[0].GlobalPosition);
+			return GlobalPosition.DistanceTo(position) <= CloseAwarenessDistance;
+		}
+	*/
+
+	private void CheckLineOfSightToVisualContactObjects()
+	{
+		for (int i = 0; i < BodiesInVisualContact.Count; i++)
+		{
+			var bodyPosition = BodiesInVisualContact[i].GlobalPosition;
+			var bodyLocalPosition = bodyPosition * GlobalTransform;
+			VisionCast.TargetPosition = bodyLocalPosition;
+			VisionCast.ForceRaycastUpdate();
+			if (VisionCast.GetCollider() as Node3D != BodiesInVisualContact[i])
+			{
+				BodiesInVisualContact.Remove(BodiesInVisualContact[i]);
+			}
+		}
+	}
+
+	private bool IsInFov(Vector3 position)
+	{
+		var vectorToContact = position.Normalized();
+		var forwardVector = Vector3.Forward.Normalized();
+		var dot = forwardVector.Dot(vectorToContact);
+		var cosTheta = Math.Cos(FieldOfView / 2f * (Math.PI / 180));
+
+		var contactDebug = GetNode<RayCast3D>("ContactDebug");
+		var forwardDebug = GetNode<RayCast3D>("ForwardDebug");
+
+		contactDebug.TargetPosition = vectorToContact;
+		forwardDebug.TargetPosition = forwardVector;
+
+		return dot > cosTheta;
+	}
+
+
+	private void UpdateFacing()
+	{
+		FrontCast.ForceRaycastUpdate();
+		if (FrontCast.GetCollider() is CharacterBody3D character)
+		{
+			Facing = character;
+		}
+		else
+		{
+			Facing = null;
 		}
 	}
 
@@ -54,12 +111,12 @@ public partial class VisionAwareness : Node3D
 	{
 		if (body is CharacterBody3D && body != Self)
 		{
-			_bodiesInAwarenessRange.Add(body);
+			BodiesInAwarenessRange.Add(body);
 		}
 	}
 
 	private void OnAwarenessAreaBodyExited(Node3D body)
 	{
-		_bodiesInAwarenessRange.Remove(body);
+		BodiesInAwarenessRange.Remove(body);
 	}
 }

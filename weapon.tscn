@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dwrplvq7pbtkw"]
+
+[ext_resource type="Script" path="res://CharacterWeapon.cs" id="1_qsfn3"]
+[ext_resource type="PackedScene" uid="uid://cuolk5evde87q" path="res://bullet_trail.tscn" id="2_2sd8b"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wcsci"]
+albedo_color = Color(0.254902, 0.254902, 0.254902, 1)
+metallic = 0.91
+metallic_specular = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_pxcfk"]
+material = SubResource("StandardMaterial3D_wcsci")
+
+[node name="Weapon" type="Node3D" node_paths=PackedStringArray("GunRay")]
+transform = Transform3D(0.125652, 0, 0, 0, 0.113799, 0, 0, 0, 1, 0.0727141, 0.0695464, -0.941065)
+script = ExtResource("1_qsfn3")
+GunRay = NodePath("GunRay")
+Damage = 50.0
+RangeTrail = ExtResource("2_2sd8b")
+
+[node name="GunRay" type="RayCast3D" parent="."]
+transform = Transform3D(7.95849, 0, 0, 0, 8.78742, 0, 0, 0, 1, -0.00348687, -0.000451088, -0.50107)
+target_position = Vector3(0, 0, -50)
+debug_shape_custom_color = Color(0.639216, 0.403922, 0, 0.223529)
+debug_shape_thickness = 5
+
+[node name="GunMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_pxcfk")
+skeleton = NodePath("../../BodyMeshes/MeshInstance3D")

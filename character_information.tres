@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://dc6l0balx73uq"]
+
+[ext_resource type="Script" path="res://CharacterInformation.cs" id="1_gbioj"]
+[ext_resource type="PackedScene" uid="uid://ushku02k36cw" path="res://death_animation_sprite.tscn" id="1_vs40b"]
+[ext_resource type="PackedScene" uid="uid://cfuxymtmob0r4" path="res://hurt_spurt.tscn" id="2_vn2py"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_gbioj")
+Health = 300.0
+MovementSpeed = 5
+DeathAnimation = ExtResource("1_vs40b")
+HurtAnimation = ExtResource("2_vn2py")

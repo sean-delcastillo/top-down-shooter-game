@@ -5,24 +5,24 @@ using System.Dynamic;
 public partial class EnemyCharacterController : CharacterBody3D
 {
 	[Export]
-	public bool IsComputerControlled { set; get; } = false;
+	public CharacterInformation CharacterInformation { set; get; }
 	[Export]
-	public double Health { set; get; } = 200;
+	public bool IsComputerControlled { set; get; } = false;
 	[Export]
 	public CharacterWeapon Weapon { set; get; }
 
-	private PackedScene _deathSpriteAnimation = GD.Load<PackedScene>("res://death_animation_sprite.tscn");
-	private PackedScene _hurtSpurtParticles = GD.Load<PackedScene>("res://hurt_spurt.tscn");
 	private NavigationAgent3D _navigation;
+	private VisionAwareness _visionAwareness;
 
 	public override void _Ready()
 	{
 		_navigation = GetNode<NavigationAgent3D>("NavigationAgent3D");
+		_visionAwareness = GetNode<VisionAwareness>("VisionAwareness");
 	}
 
 	public override void _Process(double delta)
 	{
-		if (Health <= 0)
+		if (CharacterInformation.Health <= 0)
 		{
 			Die();
 		}
@@ -32,29 +32,46 @@ public partial class EnemyCharacterController : CharacterBody3D
 	{
 		if (IsComputerControlled)
 		{
-
+			FaceVisualContacts();
+			FireControl();
 		}
 
 		MoveAndSlide();
 	}
 
-	public void TakeDamage(Double damage)
+	public void TakeDamage(double damage)
 	{
-		Health -= damage;
+		CharacterInformation.Health -= damage;
 	}
 
 	public void DamageAtLocation(Vector3 at, Vector3 normal)
 	{
-		var hurtParticles = _hurtSpurtParticles.Instantiate() as HurtSpurt;
+		var hurtParticles = CharacterInformation.HurtAnimation.Instantiate() as HurtSpurt;
 		hurtParticles.LookAtFromPosition(at, normal);
 		GetParent().AddChild(hurtParticles);
 	}
 
 	private void Die()
 	{
-		var deathAnimation = _deathSpriteAnimation.Instantiate() as Node3D;
+		var deathAnimation = CharacterInformation.DeathAnimation.Instantiate() as Node3D;
 		deathAnimation.GlobalPosition = GlobalPosition;
 		GetParent().AddChild(deathAnimation);
 		QueueFree();
+	}
+
+	private void FaceVisualContacts()
+	{
+		if (_visionAwareness.BodiesInVisualContact.Count > 0)
+		{
+			LookAt(_visionAwareness.BodiesInVisualContact[0].GlobalPosition);
+		}
+	}
+
+	private void FireControl()
+	{
+		if (_visionAwareness.Facing != null)
+		{
+			Weapon.PrimaryAction();
+		}
 	}
 }

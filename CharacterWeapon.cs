@@ -21,16 +21,15 @@ public partial class CharacterWeapon : Node3D
 		{
 			BulletTrail(GunRay.GetCollisionPoint());
 			var target = GunRay.GetCollider() as Node3D;
-			if (target.IsInGroup("Enemies"))
+			if (target is CharacterBody3D characterTarget)
 			{
-				var enemyTarget = target as EnemyCharacterController;
-				enemyTarget.Call("TakeDamage", Damage);
-				enemyTarget.Call("DamageAtLocation", GunRay.GetCollisionPoint(), GunRay.GetCollisionNormal());
+				characterTarget.Call("TakeDamage", Damage);
+				characterTarget.Call("DamageAtLocation", GunRay.GetCollisionPoint(), GunRay.GetCollisionNormal());
 			}
 		}
 		else
 		{
-			BulletTrail(GunRay.GlobalPosition + GlobalTransform * GunRay.TargetPosition);
+			BulletTrail(GlobalTransform * GunRay.TargetPosition);
 		}
 	}
 

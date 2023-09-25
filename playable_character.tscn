@@ -1,8 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://dyynn2v6e6k5"]
+[gd_scene load_steps=12 format=3 uid="uid://dyynn2v6e6k5"]
 
 [ext_resource type="Script" path="res://PlayerCharacterController.cs" id="1_41yij"]
-[ext_resource type="Script" path="res://CharacterWeapon.cs" id="2_svptt"]
-[ext_resource type="PackedScene" uid="uid://cuolk5evde87q" path="res://bullet_trail.tscn" id="3_kyjvh"]
+[ext_resource type="Resource" uid="uid://dc6l0balx73uq" path="res://character_information.tres" id="2_nah14"]
+[ext_resource type="PackedScene" uid="uid://dwrplvq7pbtkw" path="res://weapon.tscn" id="3_3kqrm"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jd1kb"]
 
@@ -28,20 +28,10 @@ albedo_color = Color(0.537255, 0.113725, 0.105882, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_wupr4"]
 material = SubResource("StandardMaterial3D_xl4bf")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wcsci"]
-albedo_color = Color(0.254902, 0.254902, 0.254902, 1)
-metallic = 0.91
-metallic_specular = 0.88
-
-[sub_resource type="BoxMesh" id="BoxMesh_pxcfk"]
-material = SubResource("StandardMaterial3D_wcsci")
-
 [node name="PlayableCharacter" type="CharacterBody3D" node_paths=PackedStringArray("Weapon")]
 script = ExtResource("1_41yij")
+CharacterInformation = ExtResource("2_nah14")
 Weapon = NodePath("Weapon")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-target_desired_distance = 0.2
 
 [node name="BodyHitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_jd1kb")
@@ -69,21 +59,4 @@ mesh = SubResource("CapsuleMesh_lwsl0")
 transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.113202, 0.382)
 mesh = SubResource("CapsuleMesh_wupr4")
 
-[node name="Weapon" type="Node3D" parent="." node_paths=PackedStringArray("GunRay")]
-transform = Transform3D(0.125652, 0, 0, 0, 0.113799, 0, 0, 0, 1, 0.149052, 0.0187043, -0.941065)
-script = ExtResource("2_svptt")
-GunRay = NodePath("GunRay")
-Damage = 50.0
-RangeTrail = ExtResource("3_kyjvh")
-
-[node name="GunRay" type="RayCast3D" parent="Weapon"]
-transform = Transform3D(7.95849, 0, 0, 0, 8.78742, 0, 0, 0, 1, -0.00348651, -0.000451088, -0.498258)
-target_position = Vector3(0, 0, -100)
-debug_shape_custom_color = Color(0.639216, 0.403922, 0, 0.223529)
-debug_shape_thickness = 5
-
-[node name="GunMesh" type="MeshInstance3D" parent="Weapon"]
-mesh = SubResource("BoxMesh_pxcfk")
-skeleton = NodePath("../../BodyMeshes/MeshInstance3D")
-
-[node name="AwarenessVision" type="Node3D" parent="."]
+[node name="Weapon" parent="." instance=ExtResource("3_3kqrm")]

@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://kh3o8x4m20xr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_hu2jx"]
+font_size = 100
+shadow_size = 10
+shadow_color = Color(0, 0, 0, 0.568627)
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 1154.0
+offset_bottom = 646.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Assignment 1
+TopDownShooter"
+label_settings = SubResource("LabelSettings_hu2jx")
+horizontal_alignment = 1
+
+[node name="SceneOne" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 50
+text = "Scene 1"
+
+[node name="SceneTwo" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 50
+text = "Scene 2"
