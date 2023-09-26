@@ -10,9 +10,6 @@ public partial class CharacterWeapon : Node3D
 	public float Damage { set; get; }
 
 	[Export]
-	public float Range { set; get; }
-
-	[Export]
 	public PackedScene RangeTrail { set; get; }
 
 	public void PrimaryAction()
