@@ -9,7 +9,7 @@ public partial class EnemyCharacterController : CharacterBody3D
 	[Export]
 	public bool IsComputerControlled { set; get; } = false;
 	[Export]
-	public CharacterWeapon Weapon { set; get; }
+	public CharacterWeapon Weapon { set; get; } = null;
 
 	private NavigationAgent3D _navigation;
 	private VisionAwareness _visionAwareness;
@@ -71,7 +71,7 @@ public partial class EnemyCharacterController : CharacterBody3D
 	{
 		if (_visionAwareness.Facing != null)
 		{
-			Weapon.PrimaryAction();
+			Weapon?.Call("PrimaryAction");
 		}
 	}
 }

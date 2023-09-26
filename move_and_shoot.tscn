@@ -1,0 +1,420 @@
+[gd_scene load_steps=42 format=3 uid="uid://dk2t8ipn2r161"]
+
+[ext_resource type="Script" path="res://World.cs" id="1_vbvdr"]
+[ext_resource type="PackedScene" uid="uid://w8kgdybreh8x" path="res://ui.tscn" id="2_4cem6"]
+[ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_blocks.gd" id="2_jk3n8"]
+[ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_convex_block.gd" id="3_hqsqn"]
+[ext_resource type="Script" path="res://addons/cyclops_level_builder/resources/convex_block_data.gd" id="4_dja8g"]
+[ext_resource type="Material" uid="uid://drgng8uqee0b0" path="res://assets/materials/black_grid.tres" id="4_m2jwp"]
+[ext_resource type="PackedScene" uid="uid://dyynn2v6e6k5" path="res://playable_character.tscn" id="5_4jvqk"]
+[ext_resource type="Material" uid="uid://dnquk3g7n0dle" path="res://assets/materials/orange_grid_outline.tres" id="6_e1uum"]
+[ext_resource type="PackedScene" uid="uid://ushku02k36cw" path="res://death_animation_sprite.tscn" id="6_xyskm"]
+[ext_resource type="PackedScene" uid="uid://cfuxymtmob0r4" path="res://hurt_spurt.tscn" id="7_1ag2s"]
+[ext_resource type="Script" path="res://CharacterInformation.cs" id="8_1r420"]
+[ext_resource type="PackedScene" uid="uid://deo7i4wymlv2c" path="res://camera_rig.tscn" id="9_bob5f"]
+[ext_resource type="Script" path="res://EnemyCharacterController.cs" id="11_6623m"]
+[ext_resource type="Script" path="res://VisionAwareness.cs" id="12_0c00q"]
+
+[sub_resource type="Resource" id="Resource_5lmx8"]
+script = ExtResource("4_dja8g")
+selected = false
+active = false
+collsion = true
+vertex_points = PackedVector3Array(-49.25, -0.75, -55.25, 21.75, -0.75, -58.25, 21.75, 0.5, -58.25, -49.25, 0.5, -55.25, -49, 0.5, 41.875, 22, 0.5, 38.875, 22, -0.75, 38.875, -49, -0.75, 41.875)
+vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
+active_vertex = -1
+edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 3, 2, 5, 5, 4, 6, 7, 7, 4, 5, 6, 0, 7, 6, 1)
+edge_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+active_edge = -1
+edge_face_indices = PackedInt32Array(0, 3, 0, 4, 0, 1, 0, 5, 1, 5, 1, 4, 1, 2, 2, 3, 2, 5, 2, 4, 3, 5, 3, 4)
+face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
+face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 4, 3, 2, 5, 6, 7, 4, 5, 0, 7, 6, 1, 6, 5, 2, 1, 0, 3, 4, 7)
+face_material_indices = PackedInt32Array(-1, 0, -1, -1, -1, -1)
+face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0)])
+face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
+active_face = -1
+face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[sub_resource type="Resource" id="Resource_j2od5"]
+script = ExtResource("4_dja8g")
+selected = false
+active = false
+collsion = true
+vertex_points = PackedVector3Array(-8.625, 3.5, -25, -8.625, 0.5, -25, -8.125, 0.5, -25, -8.125, 3.5, -25, -8.125, 3.5, -20.5, -8.125, 0.5, -20.5, -8.625, 0.5, -20.5, -8.625, 3.5, -20.5)
+vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
+active_vertex = -1
+edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 3, 2, 5, 5, 4, 6, 5, 1, 6, 4, 7, 7, 0, 6, 7)
+edge_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+active_edge = -1
+edge_face_indices = PackedInt32Array(0, 5, 0, 2, 0, 1, 0, 3, 1, 3, 1, 2, 1, 4, 2, 4, 2, 5, 3, 4, 3, 5, 4, 5)
+face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
+face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 4, 3, 2, 5, 6, 5, 2, 1, 0, 3, 4, 7, 6, 7, 4, 5, 0, 7, 6, 1)
+face_material_indices = PackedInt32Array(0, 0, 0, 0, 0, 0)
+face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0)])
+face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
+active_face = -1
+face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[sub_resource type="Resource" id="Resource_3bxqx"]
+script = ExtResource("4_dja8g")
+selected = false
+active = false
+collsion = true
+vertex_points = PackedVector3Array(2, 1, 8, -26, 1, 8, -26, 1, 10, 2, 1, 10, 2, 6, 10, -26, 6, 10, -26, 6, 8, 2, 6, 8)
+vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
+active_vertex = -1
+edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 3, 2, 5, 5, 4, 6, 5, 1, 6, 4, 7, 7, 0, 6, 7)
+edge_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+active_edge = -1
+edge_face_indices = PackedInt32Array(0, 5, 0, 2, 0, 1, 0, 3, 1, 3, 1, 2, 1, 4, 2, 4, 2, 5, 3, 4, 3, 5, 4, 5)
+face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
+face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 4, 3, 2, 5, 6, 5, 2, 1, 0, 3, 4, 7, 6, 7, 4, 5, 6, 1, 0, 7)
+face_material_indices = PackedInt32Array(0, 0, 0, 0, 0, 0)
+face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0)])
+face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
+active_face = -1
+face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[sub_resource type="Resource" id="Resource_xfjma"]
+script = ExtResource("4_dja8g")
+selected = false
+active = false
+collsion = true
+vertex_points = PackedVector3Array(-26, 1, -38, -24, 1, -38, -24, 6, -38, -26, 6, -38, -24, 6, 8, -26, 6, 8, -24, 1, 8, -26, 1, 8)
+vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
+active_vertex = -1
+edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 3, 2, 4, 6, 4, 1, 6, 7, 0, 5, 7, 6, 7)
+edge_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+active_edge = -1
+edge_face_indices = PackedInt32Array(0, 5, 0, 2, 0, 1, 0, 3, 1, 4, 1, 3, 1, 2, 2, 4, 2, 5, 3, 5, 3, 4, 4, 5)
+face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
+face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 4, 5, 3, 2, 6, 4, 2, 1, 7, 0, 3, 5, 7, 5, 4, 6, 7, 6, 1, 0)
+face_material_indices = PackedInt32Array(0, 0, 0, 0, 0, 0)
+face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0)])
+face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
+active_face = -1
+face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[sub_resource type="Resource" id="Resource_33s0r"]
+script = ExtResource("4_dja8g")
+selected = false
+active = false
+collsion = true
+vertex_points = PackedVector3Array(0, 1, -38, 2, 1, -38, 2, 6, -38, 0, 6, -38, 2, 6, 8, 0, 6, 8, 2, 1, 8, 0, 1, 8)
+vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
+active_vertex = -1
+edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 3, 2, 4, 6, 4, 1, 6, 7, 0, 5, 7, 6, 7)
+edge_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+active_edge = -1
+edge_face_indices = PackedInt32Array(0, 5, 0, 2, 0, 1, 0, 3, 1, 4, 1, 3, 1, 2, 2, 4, 2, 5, 3, 5, 3, 4, 4, 5)
+face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
+face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 4, 5, 3, 2, 6, 4, 2, 1, 7, 0, 3, 5, 7, 5, 4, 6, 7, 6, 1, 0)
+face_material_indices = PackedInt32Array(0, 0, 0, 0, 0, 0)
+face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0)])
+face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
+active_face = -1
+face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[sub_resource type="Resource" id="Resource_dtyov"]
+script = ExtResource("4_dja8g")
+selected = false
+active = false
+collsion = true
+vertex_points = PackedVector3Array(2, 1, -40, -26, 1, -40, -26, 1, -38, 2, 1, -38, 2, 6, -38, -26, 6, -38, -26, 6, -40, 2, 6, -40)
+vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
+active_vertex = -1
+edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 3, 2, 5, 5, 4, 6, 5, 1, 6, 4, 7, 7, 0, 6, 7)
+edge_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+active_edge = -1
+edge_face_indices = PackedInt32Array(0, 5, 0, 2, 0, 1, 0, 3, 1, 3, 1, 2, 1, 4, 2, 4, 2, 5, 3, 4, 3, 5, 4, 5)
+face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
+face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 4, 3, 2, 5, 6, 5, 2, 1, 0, 3, 4, 7, 6, 7, 4, 5, 6, 1, 0, 7)
+face_material_indices = PackedInt32Array(0, 0, 0, 0, 0, 0)
+face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0)])
+face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
+active_face = -1
+face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[sub_resource type="Resource" id="Resource_bpunc"]
+script = ExtResource("4_dja8g")
+selected = false
+active = false
+collsion = true
+vertex_points = PackedVector3Array(-10, 3, -12, -13, 3, -12, -13, 1, -12, -10, 1, -12, -10, 1, -11, -13, 1, -11, -13, 3, -11, -10, 3, -11)
+vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
+active_vertex = -1
+edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 3, 2, 5, 5, 4, 6, 5, 1, 6, 4, 7, 7, 0, 6, 7)
+edge_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+active_edge = -1
+edge_face_indices = PackedInt32Array(0, 5, 0, 2, 0, 1, 0, 3, 1, 3, 1, 2, 1, 4, 2, 4, 2, 5, 3, 4, 3, 5, 4, 5)
+face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
+face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 4, 3, 2, 5, 6, 5, 2, 1, 0, 3, 4, 7, 6, 7, 4, 5, 0, 7, 6, 1)
+face_material_indices = PackedInt32Array(0, 0, 0, 0, 0, 0)
+face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0)])
+face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
+active_face = -1
+face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[sub_resource type="Resource" id="Resource_uthp6"]
+resource_local_to_scene = true
+script = ExtResource("8_1r420")
+Health = 300.0
+MovementSpeed = 5
+DeathAnimation = ExtResource("6_xyskm")
+HurtAnimation = ExtResource("7_1ag2s")
+
+[sub_resource type="Resource" id="Resource_b8myh"]
+resource_local_to_scene = true
+script = ExtResource("8_1r420")
+Health = 200.0
+MovementSpeed = 5
+DeathAnimation = ExtResource("6_xyskm")
+HurtAnimation = ExtResource("7_1ag2s")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_td06u"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3v0fu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yyo3h"]
+albedo_color = Color(0.109804, 0.266667, 0.603922, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_udouw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6y4t6"]
+transparency = 1
+blend_mode = 3
+albedo_color = Color(0.643137, 1, 1, 1)
+metallic = 0.7
+metallic_specular = 0.6
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_at223"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6j5h2"]
+albedo_color = Color(0.109804, 0.266667, 0.603922, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_441mf"]
+material = SubResource("StandardMaterial3D_6j5h2")
+
+[sub_resource type="Resource" id="Resource_2x6dd"]
+resource_local_to_scene = true
+script = ExtResource("8_1r420")
+Health = 200.0
+MovementSpeed = 5
+DeathAnimation = ExtResource("6_xyskm")
+HurtAnimation = ExtResource("7_1ag2s")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aftge"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_w0uqy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8mfbk"]
+albedo_color = Color(0.109804, 0.266667, 0.603922, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_y3or7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s25wk"]
+transparency = 1
+blend_mode = 3
+albedo_color = Color(0.643137, 1, 1, 1)
+metallic = 0.7
+metallic_specular = 0.6
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fl6a7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_apnhv"]
+albedo_color = Color(0.109804, 0.266667, 0.603922, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0h7t7"]
+material = SubResource("StandardMaterial3D_apnhv")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qpjqg"]
+radius = 12.0
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_vbvdr")
+
+[node name="UI" parent="." instance=ExtResource("2_4cem6")]
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -15.9264, 0.664533, 2.5558)
+text = "WASD 
+to Move"
+font_size = 200
+
+[node name="Label3D2" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -12.1036, 0.664533, 5.46117)
+text = "Mouse 
+to Aim"
+font_size = 200
+
+[node name="Label3D3" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.07572, 0.664533, 2.53965)
+text = "LMB
+to Shoot"
+font_size = 200
+
+[node name="Label3D4" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -6.90599, 0.664533, -7.63892)
+text = "Enemies can 
+be destroyed"
+font_size = 200
+
+[node name="Label3D5" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -17.6153, 0.664533, -19.7201)
+text = "Enemies can become
+aware of you
+and track your
+movement"
+font_size = 150
+
+[node name="Label3D6" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -5.08623, 0.664533, -19.126)
+text = "Break line of sight to
+escape their gaze!"
+font_size = 150
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.642386, 0.766381, 0, -0.766381, 0.642386, -12.2712, 29.6982, 2.3203)
+
+[node name="CyclopsBlocks" type="Node3D" parent="."]
+script = ExtResource("2_jk3n8")
+
+[node name="Block_0" type="Node" parent="CyclopsBlocks"]
+script = ExtResource("3_hqsqn")
+materials = Array[Material]([ExtResource("4_m2jwp")])
+block_data = SubResource("Resource_5lmx8")
+
+[node name="Block_1" type="Node" parent="CyclopsBlocks"]
+script = ExtResource("3_hqsqn")
+materials = Array[Material]([ExtResource("6_e1uum")])
+block_data = SubResource("Resource_j2od5")
+
+[node name="Block_2" type="Node" parent="CyclopsBlocks"]
+script = ExtResource("3_hqsqn")
+materials = Array[Material]([ExtResource("6_e1uum")])
+block_data = SubResource("Resource_3bxqx")
+
+[node name="Block_3" type="Node" parent="CyclopsBlocks"]
+script = ExtResource("3_hqsqn")
+materials = Array[Material]([ExtResource("6_e1uum")])
+block_data = SubResource("Resource_xfjma")
+
+[node name="Block_4" type="Node" parent="CyclopsBlocks"]
+script = ExtResource("3_hqsqn")
+materials = Array[Material]([ExtResource("6_e1uum")])
+block_data = SubResource("Resource_33s0r")
+
+[node name="Block_5" type="Node" parent="CyclopsBlocks"]
+script = ExtResource("3_hqsqn")
+materials = Array[Material]([ExtResource("6_e1uum")])
+block_data = SubResource("Resource_dtyov")
+
+[node name="Block_6" type="Node" parent="CyclopsBlocks"]
+script = ExtResource("3_hqsqn")
+materials = Array[Material]([ExtResource("6_e1uum")])
+block_data = SubResource("Resource_bpunc")
+
+[node name="PlayerCharacter" parent="." instance=ExtResource("5_4jvqk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.895, 2.59396, 2.3203)
+CharacterInformation = SubResource("Resource_uthp6")
+
+[node name="CameraRig" parent="." node_paths=PackedStringArray("CameraTarget") instance=ExtResource("9_bob5f")]
+transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, -4.94992, 19.5749, 2.15327)
+CameraTarget = NodePath("../PlayerCharacter")
+
+[node name="EnemyCharacterOne" type="CharacterBody3D" parent="." groups=["Enemies"]]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -11.5132, 1.56361, -9.6775)
+script = ExtResource("11_6623m")
+CharacterInformation = SubResource("Resource_b8myh")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="EnemyCharacterOne"]
+
+[node name="BodyCollision" type="CollisionShape3D" parent="EnemyCharacterOne"]
+shape = SubResource("CapsuleShape3D_td06u")
+
+[node name="BodyMeshes" type="MeshInstance3D" parent="EnemyCharacterOne"]
+mesh = SubResource("CapsuleMesh_3v0fu")
+surface_material_override/0 = SubResource("StandardMaterial3D_yyo3h")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="EnemyCharacterOne/BodyMeshes"]
+transform = Transform3D(0.803418, 0, 0, 0, 0.251419, 0, 0, 0, 0.803418, 0, 0.403948, -0.26445)
+mesh = SubResource("CapsuleMesh_udouw")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_6y4t6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EnemyCharacterOne/BodyMeshes/MeshInstance3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.956421, 0, 0, 0, 0.965868, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_at223")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EnemyCharacterOne/BodyMeshes"]
+transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.113202, 0.382)
+mesh = SubResource("CapsuleMesh_441mf")
+
+[node name="EnemyCharacterTwo" type="CharacterBody3D" parent="." groups=["Enemies"]]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -12.2902, 1.56361, -24.6223)
+script = ExtResource("11_6623m")
+CharacterInformation = SubResource("Resource_2x6dd")
+IsComputerControlled = true
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="EnemyCharacterTwo"]
+
+[node name="BodyCollision" type="CollisionShape3D" parent="EnemyCharacterTwo"]
+shape = SubResource("CapsuleShape3D_aftge")
+
+[node name="BodyMeshes" type="MeshInstance3D" parent="EnemyCharacterTwo"]
+mesh = SubResource("CapsuleMesh_w0uqy")
+surface_material_override/0 = SubResource("StandardMaterial3D_8mfbk")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="EnemyCharacterTwo/BodyMeshes"]
+transform = Transform3D(0.803418, 0, 0, 0, 0.251419, 0, 0, 0, 0.803418, 0, 0.403948, -0.26445)
+mesh = SubResource("CapsuleMesh_y3or7")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s25wk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EnemyCharacterTwo/BodyMeshes/MeshInstance3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.956421, 0, 0, 0, 0.965868, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_fl6a7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EnemyCharacterTwo/BodyMeshes"]
+transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.113202, 0.382)
+mesh = SubResource("CapsuleMesh_0h7t7")
+
+[node name="VisionAwareness" type="Node3D" parent="EnemyCharacterTwo" node_paths=PackedStringArray("AwarenessArea", "VisionCast", "FrontCast", "Self")]
+script = ExtResource("12_0c00q")
+AwarenessArea = NodePath("AwarenessArea")
+VisionCast = NodePath("VisionCast")
+FrontCast = NodePath("ForwardCast")
+Self = NodePath("..")
+
+[node name="ForwardCast" type="RayCast3D" parent="EnemyCharacterTwo/VisionAwareness"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.399498, -0.652044)
+target_position = Vector3(0, 0, -9)
+
+[node name="VisionCast" type="RayCast3D" parent="EnemyCharacterTwo/VisionAwareness"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.73972e-08, 0.399234, -0.669046)
+target_position = Vector3(0, 0, -1)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="EnemyCharacterTwo/VisionAwareness/VisionCast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.892236, 0)
+light_color = Color(1, 0.490196, 0.235294, 1)
+light_energy = 5.0
+light_indirect_energy = 0.0
+shadow_enabled = true
+spot_range = 9.42044
+spot_attenuation = 1e-05
+spot_angle_attenuation = 1e-05
+
+[node name="AwarenessArea" type="Area3D" parent="EnemyCharacterTwo/VisionAwareness"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EnemyCharacterTwo/VisionAwareness/AwarenessArea"]
+shape = SubResource("SphereShape3D_qpjqg")
+
+[node name="ForwardDebug" type="RayCast3D" parent="EnemyCharacterTwo/VisionAwareness"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.522347)
+target_position = Vector3(0, 0, -1)
+debug_shape_custom_color = Color(0.509804, 0.682353, 0.207843, 1)
+
+[node name="ContactDebug" type="RayCast3D" parent="EnemyCharacterTwo/VisionAwareness"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.530058)
+target_position = Vector3(0, 0, -1)
+debug_shape_custom_color = Color(1, 0.87451, 0, 1)
