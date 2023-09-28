@@ -60,3 +60,4 @@ transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.11320
 mesh = SubResource("CapsuleMesh_wupr4")
 
 [node name="Weapon" parent="." instance=ExtResource("3_3kqrm")]
+FireRate = 500

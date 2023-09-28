@@ -3,3 +3,6 @@
 
 # Ignore builds
 build/
+
+# Ignore assignments
+assignment*/

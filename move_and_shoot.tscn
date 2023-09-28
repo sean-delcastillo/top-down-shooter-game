@@ -155,7 +155,7 @@ face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
 active_face = -1
 face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
 
-[sub_resource type="Resource" id="Resource_uthp6"]
+[sub_resource type="Resource" id="Resource_i2ntq"]
 resource_local_to_scene = true
 script = ExtResource("8_1r420")
 Health = 300.0
@@ -316,7 +316,7 @@ block_data = SubResource("Resource_bpunc")
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("5_4jvqk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.895, 2.59396, 2.3203)
-CharacterInformation = SubResource("Resource_uthp6")
+CharacterInformation = SubResource("Resource_i2ntq")
 
 [node name="CameraRig" parent="." node_paths=PackedStringArray("CameraTarget") instance=ExtResource("9_bob5f")]
 transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, -4.94992, 19.5749, 2.15327)

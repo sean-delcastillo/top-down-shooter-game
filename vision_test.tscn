@@ -242,7 +242,7 @@ face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
 active_face = -1
 face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
 
-[sub_resource type="Resource" id="Resource_gw4xo"]
+[sub_resource type="Resource" id="Resource_wt3vd"]
 resource_local_to_scene = true
 script = ExtResource("10_tvch8")
 Health = 200.0
@@ -250,7 +250,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("8_33qls")
 HurtAnimation = ExtResource("9_2s7ot")
 
-[sub_resource type="Resource" id="Resource_o5un5"]
+[sub_resource type="Resource" id="Resource_0umcm"]
 resource_local_to_scene = true
 script = ExtResource("10_tvch8")
 Health = 200.0
@@ -347,9 +347,9 @@ CameraTarget = NodePath("../PlayerCharacter")
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("7_fe2fw")]
 transform = Transform3D(0.875979, 0, 0.48235, 0, 1, 0, -0.48235, 0, 0.875979, 3.2729, 0.0896232, 4.52072)
-CharacterInformation = SubResource("Resource_gw4xo")
+CharacterInformation = SubResource("Resource_wt3vd")
 
 [node name="HostileEnemy" parent="." instance=ExtResource("11_ylbnl")]
 transform = Transform3D(-0.934999, 0, 0.35465, 0, 1, 0, -0.35465, 0, -0.934999, 0.856575, 4.76837e-07, -5.70247)
-CharacterInformation = SubResource("Resource_o5un5")
+CharacterInformation = SubResource("Resource_0umcm")
 IsComputerControlled = true

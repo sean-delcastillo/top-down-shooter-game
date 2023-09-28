@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwrplvq7pbtkw"]
+[gd_scene load_steps=6 format=3 uid="uid://dwrplvq7pbtkw"]
 
 [ext_resource type="Script" path="res://CharacterWeapon.cs" id="1_qsfn3"]
 [ext_resource type="PackedScene" uid="uid://cuolk5evde87q" path="res://bullet_trail.tscn" id="2_2sd8b"]
@@ -11,11 +11,16 @@ metallic_specular = 0.88
 [sub_resource type="BoxMesh" id="BoxMesh_pxcfk"]
 material = SubResource("StandardMaterial3D_wcsci")
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hdow0"]
+height = 0.7
+radius = 0.756015
+
 [node name="Weapon" type="Node3D" node_paths=PackedStringArray("GunRay")]
 transform = Transform3D(0.125652, 0, 0, 0, 0.113799, 0, 0, 0, 1, 0.0727141, 0.0695464, -0.941065)
 script = ExtResource("1_qsfn3")
 GunRay = NodePath("GunRay")
 Damage = 50.0
+FireRate = 850
 RangeTrail = ExtResource("2_2sd8b")
 
 [node name="GunRay" type="RayCast3D" parent="."]
@@ -25,5 +30,16 @@ debug_shape_custom_color = Color(0.639216, 0.403922, 0, 0.223529)
 debug_shape_thickness = 5
 
 [node name="GunMesh" type="MeshInstance3D" parent="."]
+layers = 2
 mesh = SubResource("BoxMesh_pxcfk")
 skeleton = NodePath("../../BodyMeshes/MeshInstance3D")
+
+[node name="CrowdingCollisionArea" type="Area3D" parent="GunMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, -0.133874)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GunMesh/CrowdingCollisionArea"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.030535)
+shape = SubResource("CylinderShape3D_hdow0")
+
+[node name="FireRateTimer" type="Timer" parent="."]
+one_shot = true

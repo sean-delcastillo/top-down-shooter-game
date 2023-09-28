@@ -14,7 +14,7 @@ public partial class PlayerCharacterController : CharacterBody3D
 
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("LeftMouseButton"))
+		if (Input.IsActionPressed("LeftMouseButton"))
 		{
 			Weapon.PrimaryAction();
 		}
