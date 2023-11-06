@@ -85,6 +85,8 @@ public partial class World : Node3D
 	public void SaveAndQuit()
 	{
 		Save();
+		Hide();
+		GetTree().Paused = false;
 		GetTree().ChangeSceneToFile("main_menu.tscn");
 	}
 }
