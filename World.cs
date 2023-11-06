@@ -67,6 +67,7 @@ public partial class World : Node3D
 	private void OnExtractExtractionEntered()
 	{
 		GD.Print("EXTRACTION ENTERED!");
+		GetTree().ChangeSceneToFile("main_menu.tscn");
 	}
 
 	public void Save()

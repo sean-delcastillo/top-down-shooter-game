@@ -4288,7 +4288,7 @@ size = Vector3(0.2, 6.5, 2.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_j7vmp"]
 size = Vector3(0.2, 5.93139, 2.5)
 
-[sub_resource type="Resource" id="Resource_wyclx"]
+[sub_resource type="Resource" id="Resource_7a8hl"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4299,7 +4299,7 @@ HurtAnimation = ExtResource("8_20b7l")
 [sub_resource type="BoxShape3D" id="BoxShape3D_8an6p"]
 size = Vector3(200, 1, 200)
 
-[sub_resource type="Resource" id="Resource_b0wrg"]
+[sub_resource type="Resource" id="Resource_ccvks"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4307,7 +4307,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_edxgw"]
+[sub_resource type="Resource" id="Resource_ot4d6"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4315,7 +4315,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_humvb"]
+[sub_resource type="Resource" id="Resource_gvpu3"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4323,7 +4323,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_un5mg"]
+[sub_resource type="Resource" id="Resource_kbcw0"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4331,7 +4331,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_ur10a"]
+[sub_resource type="Resource" id="Resource_sus7v"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4339,7 +4339,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_h2gdl"]
+[sub_resource type="Resource" id="Resource_ijji8"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4347,7 +4347,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_1tqxf"]
+[sub_resource type="Resource" id="Resource_vnafl"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4355,7 +4355,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_54agr"]
+[sub_resource type="Resource" id="Resource_wi400"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4363,7 +4363,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_ib70l"]
+[sub_resource type="Resource" id="Resource_x38pa"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4371,7 +4371,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_5qnbl"]
+[sub_resource type="Resource" id="Resource_ie4sh"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4379,7 +4379,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_b0eqx"]
+[sub_resource type="Resource" id="Resource_bn2tf"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -4387,7 +4387,7 @@ MovementSpeed = 5
 DeathAnimation = ExtResource("7_mfkvd")
 HurtAnimation = ExtResource("8_20b7l")
 
-[sub_resource type="Resource" id="Resource_vvlqr"]
+[sub_resource type="Resource" id="Resource_vau8h"]
 resource_local_to_scene = true
 script = ExtResource("9_3c6ms")
 Health = 300.0
@@ -5492,7 +5492,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.4415, -0.014114, 35.4768)
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("6_ga02e")]
 transform = Transform3D(-0.725542, 0, -0.688177, 0, 1, 0, 0.688177, 0, -0.725542, -25.0433, 1.40109, -32.6105)
-CharacterInformation = SubResource("Resource_wyclx")
+CharacterInformation = SubResource("Resource_7a8hl")
 
 [node name="CameraRig" parent="." node_paths=PackedStringArray("CameraTarget") instance=ExtResource("10_18mvf")]
 transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, 9.58132, 23.2344, -31.6971)
@@ -5511,7 +5511,7 @@ shape = SubResource("BoxShape3D_8an6p")
 [node name="EnemyCharacter" parent="." node_paths=PackedStringArray("NavManager") instance=ExtResource("13_jyh6w")]
 transform = Transform3D(-0.999924, 0, -0.0123218, 0, 1, 0, 0.0123218, 0, -0.999924, -14.4088, 1.36958, -35.6136)
 collision_mask = 3
-CharacterInformation = SubResource("Resource_b0wrg")
+CharacterInformation = SubResource("Resource_ccvks")
 IsComputerControlled = true
 NavManager = NodePath("NavigationPointManager")
 
@@ -5537,7 +5537,7 @@ RouteOrder = 2
 
 [node name="EnemyCharacter2" parent="." node_paths=PackedStringArray("NavManager") instance=ExtResource("13_jyh6w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.1604, 1.33902, -4.32753)
-CharacterInformation = SubResource("Resource_edxgw")
+CharacterInformation = SubResource("Resource_ot4d6")
 IsComputerControlled = true
 NavManager = NodePath("NavigationPointManager")
 
@@ -5563,7 +5563,7 @@ RouteOrder = 2
 
 [node name="EnemyCharacter3" parent="." node_paths=PackedStringArray("NavManager") instance=ExtResource("13_jyh6w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.9614, 1.58108, 3.59407)
-CharacterInformation = SubResource("Resource_humvb")
+CharacterInformation = SubResource("Resource_gvpu3")
 IsComputerControlled = true
 NavManager = NodePath("NavigationPointManager")
 
@@ -5589,7 +5589,7 @@ RouteOrder = 2
 
 [node name="EnemyCharacter4" parent="." node_paths=PackedStringArray("NavManager") instance=ExtResource("13_jyh6w")]
 transform = Transform3D(-0.207092, 0, -0.978321, 0, 1, 0, 0.978321, 0, -0.207092, 17.6219, 1.53882, -4.0831)
-CharacterInformation = SubResource("Resource_un5mg")
+CharacterInformation = SubResource("Resource_kbcw0")
 IsComputerControlled = true
 NavManager = NodePath("NavigationPointManager")
 
@@ -5615,22 +5615,22 @@ RouteOrder = 2
 
 [node name="EnemyCharacter5" parent="." instance=ExtResource("13_jyh6w")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 11.8268, 1.35198, -36.3141)
-CharacterInformation = SubResource("Resource_ur10a")
+CharacterInformation = SubResource("Resource_sus7v")
 IsComputerControlled = true
 
 [node name="EnemyCharacter6" parent="." instance=ExtResource("13_jyh6w")]
 transform = Transform3D(-0.99693, 0, -0.0783022, 0, 1, 0, 0.0783022, 0, -0.99693, 20.9301, 1.53257, -31.7075)
-CharacterInformation = SubResource("Resource_h2gdl")
+CharacterInformation = SubResource("Resource_ijji8")
 IsComputerControlled = true
 
 [node name="EnemyCharacter7" parent="." instance=ExtResource("13_jyh6w")]
 transform = Transform3D(0.97576, 0, 0.218842, 0, 1, 0, -0.218842, 0, 0.97576, -20.6279, 0.581611, -11.1867)
-CharacterInformation = SubResource("Resource_1tqxf")
+CharacterInformation = SubResource("Resource_vnafl")
 IsComputerControlled = true
 
 [node name="EnemyCharacter8" parent="." node_paths=PackedStringArray("NavManager") instance=ExtResource("13_jyh6w")]
 transform = Transform3D(-0.996669, 0, -0.0815559, 0, 1, 0, 0.0815559, 0, -0.996669, 21.0546, 1.35047, 13.7449)
-CharacterInformation = SubResource("Resource_54agr")
+CharacterInformation = SubResource("Resource_wi400")
 IsComputerControlled = true
 NavManager = NodePath("NavigationPointManager")
 
@@ -5668,7 +5668,7 @@ RouteOrder = 4
 
 [node name="EnemyCharacter9" parent="." node_paths=PackedStringArray("NavManager") instance=ExtResource("13_jyh6w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.47014, 1.08959, 14.9924)
-CharacterInformation = SubResource("Resource_ib70l")
+CharacterInformation = SubResource("Resource_x38pa")
 IsComputerControlled = true
 NavManager = NodePath("NavigationPointManager")
 
@@ -5694,7 +5694,7 @@ RouteOrder = 2
 
 [node name="EnemyCharacter10" parent="." node_paths=PackedStringArray("NavManager") instance=ExtResource("13_jyh6w")]
 transform = Transform3D(0.040219, 0, -0.999191, 0, 1, 0, 0.999191, 0, 0.040219, -27.047, 1.27528, 24.2284)
-CharacterInformation = SubResource("Resource_5qnbl")
+CharacterInformation = SubResource("Resource_ie4sh")
 IsComputerControlled = true
 NavManager = NodePath("NavigationPointManager")
 
@@ -5714,12 +5714,12 @@ RouteOrder = 1
 
 [node name="EnemyCharacter11" parent="." instance=ExtResource("13_jyh6w")]
 transform = Transform3D(-0.141765, 0, -0.9899, 0, 1, 0, 0.9899, 0, -0.141765, -16.7335, 1.40622, 32.0731)
-CharacterInformation = SubResource("Resource_b0eqx")
+CharacterInformation = SubResource("Resource_bn2tf")
 IsComputerControlled = true
 
 [node name="EnemyCharacter12" parent="." node_paths=PackedStringArray("NavManager") instance=ExtResource("13_jyh6w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.4025, 1.00704, 35.8497)
-CharacterInformation = SubResource("Resource_vvlqr")
+CharacterInformation = SubResource("Resource_vau8h")
 IsComputerControlled = true
 NavManager = NodePath("NavigationPointManager")
 
