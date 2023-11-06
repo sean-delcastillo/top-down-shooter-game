@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bqnbeq6t2cysu"
+path="res://.godot/imported/Basement Floor.mp3-f8551ea88382db4f8c5b3708ac470c71.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/Basement Floor.mp3"
+dest_files=["res://.godot/imported/Basement Floor.mp3-f8551ea88382db4f8c5b3708ac470c71.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

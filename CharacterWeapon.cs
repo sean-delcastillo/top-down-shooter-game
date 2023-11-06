@@ -1,78 +1,220 @@
 using Godot;
 using System;
 
+/// <summary>
+/// For weapons that a character can have and activate.
+/// </summary>
 public partial class CharacterWeapon : Node3D
 {
+	[Signal]
+	public delegate void AmmoChangeEventHandler(int CurrentAmmo, int OldAmmo, int MaxAmmo);
+	[Signal]
+	public delegate void WeaponStabilityEventHandler(double Stability);
+
 	[Export]
 	public RayCast3D GunRay { set; get; }
-
 	[Export]
 	public float Damage { set; get; }
-
 	[Export]
 	public int FireRate { set; get; }
-
+	[Export]
+	public int MagazineSize { set; get; }
 	[Export]
 	public PackedScene RangeTrail { set; get; }
 
 	private bool _canFire = true;
-	private double _secondsPerRound;
 	private Area3D _collisionArea;
-
-	private Timer _fireRateTimer;
+	private Timer _fireFrequency;
+	private Timer _recoilRecovery;
+	private double _stability = 1;
+	private FastNoiseLite _noise = new()
+	{
+		NoiseType = FastNoiseLite.NoiseTypeEnum.Simplex,
+		Frequency = 0.5f
+	};
+	private RandomNumberGenerator _rand = new();
+	private int _bulletsInMagazine;
+	private MeshInstance3D _laser;
 
 	public override void _Ready()
 	{
-		_fireRateTimer = GetNode<Timer>("FireRateTimer");
 		_collisionArea = GetNode<Area3D>("GunMesh/CrowdingCollisionArea");
+		_laser = GetNode<MeshInstance3D>("AimLaser");
 
-		CalculateFireRateTimer();
+		_fireFrequency = new()
+		{
+			OneShot = true,
+			WaitTime = CalculateSecondsPerRound(FireRate)
+		};
+		AddChild(_fireFrequency);
+
+		_recoilRecovery = new()
+		{
+			OneShot = true,
+			WaitTime = 0.05
+		};
+		AddChild(_recoilRecovery);
+
+		_bulletsInMagazine = MagazineSize;
+
+		_rand.Randomize();
 	}
 
 	public override void _Process(double delta)
 	{
-		if (_collisionArea.HasOverlappingBodies())
+		CheckForCrowding();
+		CheckMagazine();
+
+		if (_stability <= 0.9 && _recoilRecovery.IsStopped())
 		{
-			_canFire = false;
+			_stability += 0.1;
+			Math.Clamp(_stability, 0, 1);
 		}
-		else
-		{
-			_canFire = true;
-		}
+
+		UpdateAimLaser();
+
+		EmitSignal(SignalName.WeaponStability, _stability);
 	}
 
+	/// <summary>
+	/// Emits initial weapon information signal for UI.
+	/// </summary>
+	public void RegisterWithUi()
+	{
+		EmitSignal(SignalName.AmmoChange, MagazineSize, MagazineSize, MagazineSize);
+	}
+
+	/// <summary>
+	/// Checks if any condition stops the weapon from firing, else shoots a raycast and checks for collision. 
+	/// If colliding draws a trail to collision point and calls collider's damage methods, else draws a 
+	/// trail straight forward.
+	/// </summary>
 	public void PrimaryAction()
 	{
-		if (!_fireRateTimer.IsStopped() || !_canFire)
-		{
-			return;
-		}
+		if (!_fireFrequency.IsStopped() || !_canFire) { return; }
 		else
 		{
+			var forward = GunRay.TargetPosition;
+			var recoilRay = CalculateDeflectedRay(GunRay.TargetPosition);
+			GunRay.TargetPosition = recoilRay;
+			GunRay.ForceRaycastUpdate();
+
 			if (GunRay.IsColliding())
 			{
-				BulletTrail(GunRay.GetCollisionPoint());
+				DrawBulletTrail(GunRay.GetCollisionPoint());
 				var target = GunRay.GetCollider() as Node3D;
-				if (target is CharacterBody3D characterTarget)
-				{
-					characterTarget.Call("TakeDamage", Damage);
-					characterTarget.Call("DamageAtLocation", GunRay.GetCollisionPoint(), GunRay.GetCollisionNormal());
-				}
+				target.Call("TakeDamage", Damage, GlobalPosition);
+				target.Call("DamageAtLocation", GunRay.GetCollisionPoint(), GunRay.GetCollisionNormal());
 			}
 			else
 			{
-				BulletTrail(GlobalTransform * GunRay.TargetPosition);
+				DrawBulletTrail(GlobalTransform * GunRay.TargetPosition);
 			}
-			_fireRateTimer.Start(_secondsPerRound);
+			GunRay.TargetPosition = forward;
+			if (_stability >= 0.2)
+			{
+				_stability -= 0.2;
+			}
+			EmitSignal(SignalName.AmmoChange, _bulletsInMagazine - 1, _bulletsInMagazine, MagazineSize);
+			_bulletsInMagazine -= 1;
+			_fireFrequency.Start();
+			_recoilRecovery.Start();
 		}
 	}
 
-	private void CalculateFireRateTimer()
+	/// <summary>
+	/// Resets number of bullets in magazine to maximum number of bullets and emits UI signal.
+	/// </summary>
+	public void Reload()
 	{
-		_secondsPerRound = Math.ReciprocalEstimate(FireRate / 60f);
+		_bulletsInMagazine = MagazineSize;
+		_canFire = true;
+		EmitSignal(SignalName.AmmoChange, MagazineSize, _bulletsInMagazine, MagazineSize);
 	}
 
-	private void BulletTrail(Vector3 to)
+	/// <summary>
+	/// Samples stability and calculates random deflection based on it.
+	/// </summary>
+	/// <param name="straight">The direction straight ahead from the weapon</param>
+	/// <returns>A vector3 indicating the deflected ray</returns>
+	public Vector3 CalculateDeflectedRay(Vector3 straight)
+	{
+		var maxVerticalDeflectionAngle = 20;
+		var maxHorizontalDeflectionAngle = 40;
+
+		var stability = _stability;
+		var instability = (float)(1 - stability);
+
+		var verticalDeflectionAngle = (float)Math.Pow(instability, 2) * maxVerticalDeflectionAngle;
+		var horizontalDeflectionAngle = _noise.GetNoise1D(instability) * _rand.Randfn(deviation: instability * maxHorizontalDeflectionAngle);
+
+		Vector3 verticalDeflection = straight.Rotated(Vector3.Right, verticalDeflectionAngle * (float)(Math.PI / 180));
+		Vector3 finalDeflection = verticalDeflection.Rotated(Vector3.Up, horizontalDeflectionAngle * (float)(Math.PI / 180));
+
+		return finalDeflection;
+	}
+
+
+	/// <summary>
+	/// Updates the aim laser mesh based on the aim ray's collisions.
+	/// </summary>
+	private void UpdateAimLaser()
+	{
+		GunRay.ForceRaycastUpdate();
+		if (GunRay.IsColliding())
+		{
+			Vector3 collision = GunRay.ToLocal(GunRay.GetCollisionPoint());
+			float laserLength = Math.Clamp(collision.Z, -3, 3);
+			_laser.Mesh.Set("height", laserLength);
+			_laser.Position = new Vector3(_laser.Position.X, _laser.Position.Y, laserLength / 2);
+		}
+
+		if (!_canFire)
+		{
+			_laser.Visible = false;
+		}
+		else
+		{
+			_laser.Visible = true;
+		}
+	}
+
+	/// <summary>
+	/// Checks if the weapon's crowding area is overlapping with something. If so sets condition for being 
+	/// able to fire to false, else true.
+	/// </summary>
+	private void CheckForCrowding()
+	{
+		if (_collisionArea.HasOverlappingBodies()) { _canFire = false; }
+		else { _canFire = true; }
+	}
+
+	/// <summary>
+	/// Makes the weapon unfirable if there are no bullets in the magazine.
+	/// </summary>
+	private void CheckMagazine()
+	{
+		if (_bulletsInMagazine <= 0)
+		{
+			_canFire = false;
+		}
+	}
+
+	/// <summary>
+	/// Calculates the duration of time in seconds between shots.
+	/// </summary>
+	/// <param name="fireRate">The rate of fire of this weapon in rounds per second.</param>
+	/// <returns>The duration of time in seconds between shots.</returns>
+	private double CalculateSecondsPerRound(int fireRate)
+	{
+		return Math.ReciprocalEstimate(fireRate / 60f);
+	}
+
+	/// <summary>
+	/// Draws a bullet trail mesh from the muzzle of the weapon to a position.
+	/// </summary>
+	/// <param name="to">The end position to draw the bullet trail.</param>
+	private void DrawBulletTrail(Vector3 to)
 	{
 		var bulletTrail = RangeTrail.Instantiate<BulletTrail>();
 		bulletTrail.Init(GunRay.GlobalPosition, to);

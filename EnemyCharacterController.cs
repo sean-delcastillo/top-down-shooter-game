@@ -1,6 +1,9 @@
 using Godot;
+using Godot.Collections;
 using System;
+using System.Collections.Generic;
 using System.Dynamic;
+using System.Text.RegularExpressions;
 
 public partial class EnemyCharacterController : CharacterBody3D
 {
@@ -10,14 +13,31 @@ public partial class EnemyCharacterController : CharacterBody3D
 	public bool IsComputerControlled { set; get; } = false;
 	[Export]
 	public CharacterWeapon Weapon { set; get; } = null;
+	[Export]
+	public EnemyStateManager StateManager { set; get; }
 
-	private NavigationAgent3D _navigation;
-	private VisionAwareness _visionAwareness;
+	[ExportGroup("Navigation Manager")]
+	[Export]
+	public NavigationPointManager NavManager { set; get; } = null;
+
+	[Export]
+	public int InitialRoute { set; get; } = 0;
+	[Export]
+	public int InitialPoint { set; get; } = 0;
+
+	public NavigationAgent3D NavAgent;
+	public VisionAwareness _visionAwareness;
+
+	public Vector3 _newInitNavPointGlobalPosition;
+	public Vector3 _currentNavPointGlobalPosition;
 
 	public override void _Ready()
 	{
-		_navigation = GetNode<NavigationAgent3D>("NavigationAgent3D");
+		NavAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
 		_visionAwareness = GetNode<VisionAwareness>("VisionAwareness");
+
+		StateManager.Character = this;
+		NavAgent.VelocityComputed += OnNavAgentVelocityComputed;
 	}
 
 	public override void _Process(double delta)
@@ -32,16 +52,72 @@ public partial class EnemyCharacterController : CharacterBody3D
 	{
 		if (IsComputerControlled)
 		{
-			FaceVisualContacts();
-			FireControl();
+			//FaceVisualContacts();
+			//FireControl();
+
+			/*
+			Vector3 targetPosition = GetClosestPointOnMap(NavManager.GetCurrentPointGlobalPosition());
+			NavAgent.TargetPosition = targetPosition;
+			*/
+
+			MoveToNavAgentTarget();
+			FaceMovementDirection();
 		}
 
 		MoveAndSlide();
 	}
 
-	public void TakeDamage(double damage)
+	public Vector3 GetClosestPointOnMap(Vector3 Position)
+	{
+		var map = GetWorld3D().NavigationMap;
+		return NavigationServer3D.MapGetClosestPoint(map, Position);
+	}
+
+	private void OnNavigationPointManagerReachedNavigationPoint(int _, int __)
+	{
+		NavManager.GetNextPointOnRoute();
+	}
+
+	private void MoveToNavAgentTarget()
+	{
+		if (!NavAgent.IsNavigationFinished())
+		{
+			Vector3 nextPathPosition = NavAgent.GetNextPathPosition();
+			var currentPosition = GlobalPosition;
+			var newVelocity = (nextPathPosition - currentPosition).Normalized() * 5;
+			//Velocity = newVelocity;
+			NavAgent.Velocity = newVelocity;
+		}
+		else
+		{
+			Velocity = Vector3.Zero;
+			//NavManager.GetNextPointOnRoute();
+		}
+	}
+	private void OnNavAgentVelocityComputed(Vector3 safeVelocity)
+	{
+		Velocity = safeVelocity;
+		MoveAndSlide();
+	}
+
+	private void FaceMovementDirection()
+	{
+		if (Velocity != Vector3.Zero)
+		{
+			Vector3 lookAtDirection = Velocity;
+			lookAtDirection.Y = 0;
+			LookAt(Transform.Origin + lookAtDirection, Vector3.Up);
+		}
+	}
+
+	public void TakeDamage(double damage, Vector3 from)
 	{
 		CharacterInformation.Health -= damage;
+		Dictionary dict = new()
+		{
+			{ "LastKnownLocation", from }
+		};
+		StateManager.TransitionTo("PursuingEnemy", dict);
 	}
 
 	public void DamageAtLocation(Vector3 at, Vector3 normal)
@@ -59,19 +135,21 @@ public partial class EnemyCharacterController : CharacterBody3D
 		QueueFree();
 	}
 
-	private void FaceVisualContacts()
-	{
-		if (_visionAwareness.BodiesInVisualContact.Count > 0)
+	/*
+		private void FaceVisualContacts()
 		{
-			LookAt(_visionAwareness.BodiesInVisualContact[0].GlobalPosition);
+			if (_visionAwareness.BodiesInVisualContact.Count > 0)
+			{
+				LookAt(_visionAwareness.BodiesInVisualContact[0].GlobalPosition);
+			}
 		}
-	}
 
-	private void FireControl()
-	{
-		if (_visionAwareness.Facing != null)
+		private void FireControl()
 		{
-			Weapon?.Call("PrimaryAction");
+			if (_visionAwareness.Facing != null)
+			{
+				Weapon?.PrimaryAction();
+			}
 		}
-	}
+	*/
 }

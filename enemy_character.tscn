@@ -1,9 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://c2sl726g4jpqs"]
+[gd_scene load_steps=20 format=3 uid="uid://c2sl726g4jpqs"]
 
 [ext_resource type="Script" path="res://EnemyCharacterController.cs" id="1_lnew0"]
 [ext_resource type="Script" path="res://VisionAwareness.cs" id="2_0g3ag"]
 [ext_resource type="Resource" uid="uid://dc6l0balx73uq" path="res://character_information.tres" id="2_t3kl2"]
 [ext_resource type="PackedScene" uid="uid://dwrplvq7pbtkw" path="res://weapon.tscn" id="4_slwa0"]
+[ext_resource type="Script" path="res://EnemyStateManager.cs" id="5_btcad"]
+[ext_resource type="Script" path="res://NavigatingToPoint.cs" id="6_2k7s1"]
+[ext_resource type="Script" path="res://IdleAtPoint.cs" id="7_mvtsv"]
+[ext_resource type="Script" path="res://EngagingEnemy.cs" id="8_b2tx7"]
+[ext_resource type="Script" path="res://PursuingEnemy.cs" id="9_3ukq8"]
+[ext_resource type="Script" path="res://Idle.cs" id="10_l2o77"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_td06u"]
 
@@ -30,14 +36,22 @@ albedo_color = Color(0.109804, 0.266667, 0.603922, 1)
 material = SubResource("StandardMaterial3D_6j5h2")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_qpjqg"]
-radius = 10.0
+radius = 20.0
 
-[node name="EnemyCharacter" type="CharacterBody3D" node_paths=PackedStringArray("Weapon") groups=["Enemies"]]
+[node name="EnemyCharacter" type="CharacterBody3D" node_paths=PackedStringArray("Weapon", "StateManager") groups=["Enemies"]]
 script = ExtResource("1_lnew0")
 CharacterInformation = ExtResource("2_t3kl2")
 Weapon = NodePath("Weapon")
+StateManager = NodePath("DefaultStateManager")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+target_desired_distance = 1.5
+path_height_offset = 0.1
+avoidance_enabled = true
+height = 1.5
+radius = 1.0
+neighbor_distance = 25.0
+max_speed = 2.5
 
 [node name="BodyCollision" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_td06u")
@@ -69,19 +83,22 @@ Self = NodePath("..")
 
 [node name="ForwardCast" type="RayCast3D" parent="VisionAwareness"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.399498, -0.652044)
-target_position = Vector3(0, 0, -9)
+target_position = Vector3(0, 0, -19)
+collision_mask = 3
 
 [node name="VisionCast" type="RayCast3D" parent="VisionAwareness"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.73972e-08, 0.399234, -0.669046)
 target_position = Vector3(0, 0, -1)
+collision_mask = 3
 
 [node name="SpotLight3D" type="SpotLight3D" parent="VisionAwareness/VisionCast"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.892236, 0)
 light_color = Color(1, 0.490196, 0.235294, 1)
 light_energy = 5.0
 light_indirect_energy = 0.0
+light_size = 0.002
 shadow_enabled = true
-spot_range = 9.42044
+spot_range = 20.0
 spot_attenuation = 1e-05
 spot_angle_attenuation = 1e-05
 
@@ -101,3 +118,22 @@ target_position = Vector3(0, 0, -1)
 debug_shape_custom_color = Color(1, 0.87451, 0, 1)
 
 [node name="Weapon" parent="." instance=ExtResource("4_slwa0")]
+
+[node name="DefaultStateManager" type="Node" parent="." node_paths=PackedStringArray("InitialState")]
+script = ExtResource("5_btcad")
+InitialState = NodePath("Idle")
+
+[node name="NavigatingToPoint" type="Node" parent="DefaultStateManager"]
+script = ExtResource("6_2k7s1")
+
+[node name="IdleAtPoint" type="Node" parent="DefaultStateManager"]
+script = ExtResource("7_mvtsv")
+
+[node name="EngagingEnemy" type="Node" parent="DefaultStateManager"]
+script = ExtResource("8_b2tx7")
+
+[node name="PursuingEnemy" type="Node" parent="DefaultStateManager"]
+script = ExtResource("9_3ukq8")
+
+[node name="Idle" type="Node" parent="DefaultStateManager"]
+script = ExtResource("10_l2o77")

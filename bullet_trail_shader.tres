@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dv0gtj87bbe20"]
+
+[ext_resource type="Shader" path="res://bullet_trail.gdshader" id="1_716b6"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_716b6")
+shader_parameter/alpha = 1.0

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bguvv5b7erko0"]
+
+[ext_resource type="Script" path="res://NavigationPointManager.cs" id="1_rlem5"]
+
+[node name="NavigationPointManager" type="Node"]
+script = ExtResource("1_rlem5")

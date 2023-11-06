@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://dyynn2v6e6k5"]
+[gd_scene load_steps=19 format=3 uid="uid://dyynn2v6e6k5"]
 
 [ext_resource type="Script" path="res://PlayerCharacterController.cs" id="1_41yij"]
 [ext_resource type="Resource" uid="uid://dc6l0balx73uq" path="res://character_information.tres" id="2_nah14"]
-[ext_resource type="PackedScene" uid="uid://dwrplvq7pbtkw" path="res://weapon.tscn" id="3_3kqrm"]
+[ext_resource type="Script" path="res://CharacterWeapon.cs" id="3_vrpwn"]
+[ext_resource type="PackedScene" uid="uid://cuolk5evde87q" path="res://bullet_trail.tscn" id="4_cag4n"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jd1kb"]
 
@@ -28,10 +29,42 @@ albedo_color = Color(0.537255, 0.113725, 0.105882, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_wupr4"]
 material = SubResource("StandardMaterial3D_xl4bf")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wcsci"]
+albedo_color = Color(0.254902, 0.254902, 0.254902, 1)
+metallic = 0.91
+metallic_specular = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_pxcfk"]
+material = SubResource("StandardMaterial3D_wcsci")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hdow0"]
+height = 0.7
+radius = 0.756015
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4ksy"]
+transparency = 1
+albedo_color = Color(0.184314, 0.847059, 0, 0.470588)
+emission_enabled = true
+emission = Color(0.184314, 1, 0.145098, 1)
+emission_energy_multiplier = 10.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uy4lg"]
+transparency = 1
+albedo_color = Color(0.184314, 0.847059, 0, 0.482353)
+emission = Color(0.956863, 0.172549, 0, 1)
+emission_energy_multiplier = 10.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3d2c4"]
+material = SubResource("StandardMaterial3D_uy4lg")
+flip_faces = true
+top_radius = 0.01
+bottom_radius = 0.2
+height = 0.001
+
 [node name="PlayableCharacter" type="CharacterBody3D" node_paths=PackedStringArray("Weapon")]
 script = ExtResource("1_41yij")
 CharacterInformation = ExtResource("2_nah14")
-Weapon = NodePath("Weapon")
+Weapon = NodePath("PlayerWeapon")
 
 [node name="BodyHitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_jd1kb")
@@ -59,5 +92,36 @@ mesh = SubResource("CapsuleMesh_lwsl0")
 transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.113202, 0.382)
 mesh = SubResource("CapsuleMesh_wupr4")
 
-[node name="Weapon" parent="." instance=ExtResource("3_3kqrm")]
-FireRate = 500
+[node name="PlayerWeapon" type="Node3D" parent="." node_paths=PackedStringArray("GunRay")]
+transform = Transform3D(0.125652, 0, 0, 0, 0.113799, 0, 0, 0, 1, 0.0727141, 0.0695464, -0.941065)
+script = ExtResource("3_vrpwn")
+GunRay = NodePath("GunRay")
+Damage = 150.0
+FireRate = 800
+MagazineSize = 30
+RangeTrail = ExtResource("4_cag4n")
+
+[node name="GunRay" type="RayCast3D" parent="PlayerWeapon"]
+transform = Transform3D(7.95849, 0, 0, 0, 8.78742, 0, 0, 0, 1, -0.00348687, -0.000451088, -0.50107)
+target_position = Vector3(0, 0, -50)
+collision_mask = 3
+debug_shape_custom_color = Color(0.639216, 0.403922, 0, 0.223529)
+debug_shape_thickness = 5
+
+[node name="GunMesh" type="MeshInstance3D" parent="PlayerWeapon"]
+layers = 2
+mesh = SubResource("BoxMesh_pxcfk")
+skeleton = NodePath("../../BodyMeshes/MeshInstance3D")
+
+[node name="CrowdingCollisionArea" type="Area3D" parent="PlayerWeapon/GunMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, -0.133874)
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerWeapon/GunMesh/CrowdingCollisionArea"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.030535)
+shape = SubResource("CylinderShape3D_hdow0")
+
+[node name="AimLaser" type="MeshInstance3D" parent="PlayerWeapon"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 5.96046e-08, -0.500584)
+material_override = SubResource("StandardMaterial3D_e4ksy")
+mesh = SubResource("CylinderMesh_3d2c4")

@@ -44,7 +44,7 @@ public partial class CameraController : Node3D
         if (CameraTarget != null)
         {
             UpdateCameraPosition();
-            LookAt(CameraTarget.Position);
+            //LookAt(CameraTarget.Position);
         }
 
         UpdateMousePositionInWorld();
@@ -57,7 +57,7 @@ public partial class CameraController : Node3D
         var to = from + _camera.ProjectRayNormal(GetViewport().GetMousePosition()) * RAYCAST_LENGTH;
 
         var spaceState = GetWorld3D().DirectSpaceState;
-        var query = PhysicsRayQueryParameters3D.Create(from, to);
+        var query = PhysicsRayQueryParameters3D.Create(from, to, (uint)Math.Pow(2, 32 - 1));
         var result = spaceState.IntersectRay(query);
 
         if (result.ContainsKey("position"))
@@ -68,13 +68,18 @@ public partial class CameraController : Node3D
 
     private void UpdateCameraPosition()
     {
-        var DesiredPosition = new Vector3
+        var zeroPosition = new Vector3
         (
             CameraTarget.Position.X + XOffset,
             CameraTarget.Position.Y + YOffset,
             CameraTarget.Position.Z + ZOffset
         );
 
-        Position = DesiredPosition;
+        var mouseDirection = zeroPosition.DirectionTo(_mousePositionInWorld);
+        mouseDirection.Y = 0;
+
+        var mouseDistance = zeroPosition.DistanceTo(_mousePositionInWorld);
+
+        Position = zeroPosition + mouseDirection * (float)Math.Pow(mouseDistance, 1 / 1.5);
     }
 }

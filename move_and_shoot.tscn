@@ -135,12 +135,12 @@ face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
 active_face = -1
 face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
 
-[sub_resource type="Resource" id="Resource_bpunc"]
+[sub_resource type="Resource" id="Resource_ch1no"]
 script = ExtResource("4_dja8g")
 selected = false
 active = false
 collsion = true
-vertex_points = PackedVector3Array(-10, 3, -12, -13, 3, -12, -13, 1, -12, -10, 1, -12, -10, 1, -11, -13, 1, -11, -13, 3, -11, -10, 3, -11)
+vertex_points = PackedVector3Array(-10, 2.5, -12, -13, 2.5, -12, -13, 0.5, -12, -10, 0.5, -12, -10, 0.5, -11, -13, 0.5, -11, -13, 2.5, -11, -10, 2.5, -11)
 vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
 active_vertex = -1
 edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 3, 2, 5, 5, 4, 6, 5, 1, 6, 4, 7, 7, 0, 6, 7)
@@ -155,7 +155,7 @@ face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
 active_face = -1
 face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
 
-[sub_resource type="Resource" id="Resource_i2ntq"]
+[sub_resource type="Resource" id="Resource_sy81x"]
 resource_local_to_scene = true
 script = ExtResource("8_1r420")
 Health = 300.0
@@ -235,31 +235,33 @@ script = ExtResource("1_vbvdr")
 
 [node name="UI" parent="." instance=ExtResource("2_4cem6")]
 
-[node name="Label3D" type="Label3D" parent="."]
+[node name="Labels" type="Node" parent="."]
+
+[node name="Label3D" type="Label3D" parent="Labels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -15.9264, 0.664533, 2.5558)
 text = "WASD 
 to Move"
 font_size = 200
 
-[node name="Label3D2" type="Label3D" parent="."]
+[node name="Label3D2" type="Label3D" parent="Labels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -12.1036, 0.664533, 5.46117)
 text = "Mouse 
 to Aim"
 font_size = 200
 
-[node name="Label3D3" type="Label3D" parent="."]
+[node name="Label3D3" type="Label3D" parent="Labels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.07572, 0.664533, 2.53965)
 text = "LMB
 to Shoot"
 font_size = 200
 
-[node name="Label3D4" type="Label3D" parent="."]
+[node name="Label3D4" type="Label3D" parent="Labels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -6.90599, 0.664533, -7.63892)
 text = "Enemies can 
 be destroyed"
 font_size = 200
 
-[node name="Label3D5" type="Label3D" parent="."]
+[node name="Label3D5" type="Label3D" parent="Labels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -17.6153, 0.664533, -19.7201)
 text = "Enemies can become
 aware of you
@@ -267,7 +269,7 @@ and track your
 movement"
 font_size = 150
 
-[node name="Label3D6" type="Label3D" parent="."]
+[node name="Label3D6" type="Label3D" parent="Labels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -5.08623, 0.664533, -19.126)
 text = "Break line of sight to
 escape their gaze!"
@@ -312,11 +314,11 @@ block_data = SubResource("Resource_dtyov")
 [node name="Block_6" type="Node" parent="CyclopsBlocks"]
 script = ExtResource("3_hqsqn")
 materials = Array[Material]([ExtResource("6_e1uum")])
-block_data = SubResource("Resource_bpunc")
+block_data = SubResource("Resource_ch1no")
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("5_4jvqk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.895, 2.59396, 2.3203)
-CharacterInformation = SubResource("Resource_i2ntq")
+CharacterInformation = SubResource("Resource_sy81x")
 
 [node name="CameraRig" parent="." node_paths=PackedStringArray("CameraTarget") instance=ExtResource("9_bob5f")]
 transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, -4.94992, 19.5749, 2.15327)

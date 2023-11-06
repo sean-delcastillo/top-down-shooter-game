@@ -6,3 +6,4 @@ build/
 
 # Ignore assignments
 assignment*/
+SAVEGAMESCENE.tscn

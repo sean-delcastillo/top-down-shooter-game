@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://5eu6y8t4pk8l"]
+
+[ext_resource type="Script" path="res://ExtractionPoint.cs" id="1_1sn5s"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d0uif"]
+size = Vector3(2, 0.1, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7fqnw"]
+size = Vector3(2, 0.1, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_712gv"]
+albedo_color = Color(0.254902, 0.752941, 0, 1)
+emission_enabled = true
+emission = Color(0.368627, 1, 0.231373, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qgo2c"]
+size = Vector3(2, 2, 2)
+
+[node name="ExtractionPoint" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.1041, 0, -35.5108)
+visible = false
+script = ExtResource("1_1sn5s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0666933, 0)
+shape = SubResource("BoxShape3D_d0uif")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0740764, 0)
+mesh = SubResource("BoxMesh_7fqnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_712gv")
+
+[node name="Area3D" type="Area3D" parent="."]
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02185, 0)
+shape = SubResource("BoxShape3D_qgo2c")

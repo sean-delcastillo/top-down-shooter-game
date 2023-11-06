@@ -3,6 +3,9 @@ using System;
 
 public partial class PlayerCharacterController : CharacterBody3D
 {
+	[Signal]
+	public delegate void HealthChangeEventHandler(int NewHealth, int OldHealth, int MaxHealth);
+
 	[Export]
 	public CharacterInformation CharacterInformation { set; get; }
 	[Export]
@@ -11,12 +14,22 @@ public partial class PlayerCharacterController : CharacterBody3D
 	private Vector3 _mousePositionInWorld;
 	private float _gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
 	private Vector3 _gravityVector = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector");
+	private int _maxHealth;
+
+	public override void _Ready()
+	{
+		_maxHealth = (int)CharacterInformation.Health;
+	}
 
 	public override void _Process(double delta)
 	{
 		if (Input.IsActionPressed("LeftMouseButton"))
 		{
 			Weapon.PrimaryAction();
+		}
+		if (Input.IsActionJustPressed("Reload"))
+		{
+			Weapon.Reload();
 		}
 
 		CheckIfDead();
@@ -30,8 +43,16 @@ public partial class PlayerCharacterController : CharacterBody3D
 		MoveAndSlide();
 	}
 
-	public void TakeDamage(double damage)
+	public void RegisterWithUi()
 	{
+		EmitSignal(SignalName.HealthChange, _maxHealth, _maxHealth, _maxHealth);
+		Weapon.RegisterWithUi();
+	}
+
+	public void TakeDamage(double damage, Vector3 _)
+	{
+		GD.Print("ah");
+		EmitSignal(SignalName.HealthChange, CharacterInformation.Health - damage, CharacterInformation.Health, _maxHealth);
 		CharacterInformation.Health -= damage;
 	}
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://kh3o8x4m20xr"]
+[gd_scene load_steps=5 format=3 uid="uid://kh3o8x4m20xr"]
 
 [ext_resource type="Script" path="res://MainMenu.cs" id="1_fjty6"]
+[ext_resource type="AudioStream" uid="uid://bqnbeq6t2cysu" path="res://assets/audio/Basement Floor.mp3" id="2_voy3o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bhhfl"]
 font_size = 12
@@ -46,19 +47,47 @@ alignment = 1
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Assignment 1
-TopDownShooter"
+text = "Assignment 2
+Sneak n Shoot"
 label_settings = SubResource("LabelSettings_hu2jx")
 horizontal_alignment = 1
 
-[node name="SceneOne" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="NewGame" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 50
-text = "Scene 1: Moving and Shooting"
+theme_override_font_sizes/font_size = 25
+text = "NewGame"
 
-[node name="SceneTwo" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Continue" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 50
-text = "Scene 2: Enemy Vision"
+theme_override_font_sizes/font_size = 25
+text = "Continue"
+
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Quit
+"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Volume"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Container" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_voy3o")
+autoplay = true

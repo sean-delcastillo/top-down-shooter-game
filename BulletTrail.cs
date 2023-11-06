@@ -3,10 +3,15 @@ using System;
 
 public partial class BulletTrail : MeshInstance3D
 {
-	private double TimeToLive = 0.1;
+	private double TimeToLive = 0.2
+	;
+	private AnimationPlayer animation;
+
 	public override void _Ready()
 	{
 		GetTree().CreateTimer(TimeToLive).Timeout += QueueFree;
+		animation = GetNode<AnimationPlayer>("AnimationPlayer");
+		animation.Play("FadeOut");
 	}
 
 	public void Init(Vector3 from, Vector3 to)

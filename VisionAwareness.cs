@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 public partial class VisionAwareness : Node3D
 {
@@ -24,10 +25,22 @@ public partial class VisionAwareness : Node3D
 
 	public Node3D Facing { set; get; } = null;
 
+	private List<string> _groups;
+
 	public override void _Ready()
 	{
 		AwarenessArea.BodyEntered += OnAwarenessAreaBodyEntered;
 		AwarenessArea.BodyExited += OnAwarenessAreaBodyExited;
+
+		List<string> nonInternalGroups = new();
+		foreach (string group in GetGroups())
+		{
+			if (!group.StartsWith("_"))
+			{
+				nonInternalGroups.Add(group);
+			}
+		}
+		_groups = nonInternalGroups;
 	}
 
 	public override void _Process(double delta)
@@ -109,7 +122,7 @@ public partial class VisionAwareness : Node3D
 
 	private void OnAwarenessAreaBodyEntered(Node3D body)
 	{
-		if (body is CharacterBody3D && body != Self)
+		if (body is CharacterBody3D && body != Self && !IsInSameGroups(body))
 		{
 			BodiesInAwarenessRange.Add(body);
 		}
@@ -118,5 +131,17 @@ public partial class VisionAwareness : Node3D
 	private void OnAwarenessAreaBodyExited(Node3D body)
 	{
 		BodiesInAwarenessRange.Remove(body);
+	}
+
+	private bool IsInSameGroups(Node3D body)
+	{
+		foreach (string group in _groups)
+		{
+			if (body.IsInGroup(group))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
