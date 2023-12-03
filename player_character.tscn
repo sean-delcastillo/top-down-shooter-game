@@ -1,0 +1,64 @@
+[gd_scene load_steps=12 format=3 uid="uid://dyynn2v6e6k5"]
+
+[ext_resource type="Script" path="res://PlayerCharacter.cs" id="1_t88um"]
+[ext_resource type="Resource" uid="uid://dc6l0balx73uq" path="res://character_information.tres" id="2_lmavt"]
+[ext_resource type="PackedScene" uid="uid://bjmhkoo1uuyqx" path="res://default_weapon.tscn" id="3_2y8f1"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jd1kb"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_toh35"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_etd7v"]
+albedo_color = Color(0.537255, 0.113725, 0.105882, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rqeis"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h27fb"]
+transparency = 1
+blend_mode = 3
+albedo_color = Color(0.643137, 1, 1, 1)
+metallic = 0.7
+metallic_specular = 0.6
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lwsl0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xl4bf"]
+albedo_color = Color(0.537255, 0.113725, 0.105882, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_wupr4"]
+material = SubResource("StandardMaterial3D_xl4bf")
+
+[node name="PlayerCharacter" type="CharacterBody3D" node_paths=PackedStringArray("Weapon")]
+script = ExtResource("1_t88um")
+CharacterInformation = ExtResource("2_lmavt")
+Weapon = NodePath("DefaultWeapon")
+
+[node name="BodyHitbox" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_jd1kb")
+
+[node name="BodyMeshes" type="Node3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BodyMeshes"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_toh35")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_etd7v")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="BodyMeshes/MeshInstance3D"]
+transform = Transform3D(0.803418, 0, 0, 0, 0.251419, 0, 0, 0, 0.803418, 0, 0.403948, -0.26445)
+mesh = SubResource("CapsuleMesh_rqeis")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_h27fb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BodyMeshes/MeshInstance3D/MeshInstance3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.956421, 0, 0, 0, 0.965868, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_lwsl0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BodyMeshes/MeshInstance3D"]
+transform = Transform3D(1.1014, 0, 0, 0, 0.681412, 0, 0, 0, 0.575126, 0, 0.113202, 0.382)
+mesh = SubResource("CapsuleMesh_wupr4")
+
+[node name="DefaultWeapon" parent="." instance=ExtResource("3_2y8f1")]
+transform = Transform3D(0.125652, 0, 0, 0, 0.113799, 0, 0, 0, 1, 0.08, 0, -0.949)
+FireRate = 800

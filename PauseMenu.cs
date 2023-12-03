@@ -4,23 +4,23 @@ using System;
 public partial class PauseMenu : Control
 {
 	[Signal]
-	public delegate void SaveAndQuitEventHandler();
+	public delegate void AbandonRunEventHandler();
 	[Signal]
-	public delegate void QuitEventHandler();
+	public delegate void QuitToDesktopEventHandler();
 
 	private Button _continue;
 	private Button _quit;
-	private Button _saveAndQuit;
+	private Button _abandon;
 
 	public override void _Ready()
 	{
-		_continue = GetNode<Button>("Panel/SplitContainer/Continue");
-		_saveAndQuit = GetNode<Button>("Panel/SplitContainer/SaveAndQuit");
-		_quit = GetNode<Button>("Panel/SplitContainer/Quit");
+		_continue = GetNode<Button>("%Continue");
+		_abandon = GetNode<Button>("%Abandon");
+		_quit = GetNode<Button>("%Quit");
 
 		_continue.Pressed += OnContinuePressed;
-		_saveAndQuit.Pressed += OnSaveAndQuitPressed;
-		_quit.Pressed += OnQuitPressed;
+		_abandon.Pressed += AbandonRunPressed;
+		_quit.Pressed += OnQuitToDesktopPressed;
 
 	}
 
@@ -31,13 +31,13 @@ public partial class PauseMenu : Control
 		GetTree().Paused = false;
 	}
 
-	private void OnSaveAndQuitPressed()
+	private void AbandonRunPressed()
 	{
-		EmitSignal(SignalName.SaveAndQuit);
+		EmitSignal(SignalName.AbandonRun);
 	}
 
-	private void OnQuitPressed()
+	private void OnQuitToDesktopPressed()
 	{
-		EmitSignal(SignalName.Quit);
+		EmitSignal(SignalName.QuitToDesktop);
 	}
 }

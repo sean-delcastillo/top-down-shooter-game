@@ -1,0 +1,99 @@
+[gd_scene load_steps=4 format=3 uid="uid://di3j57ju8xhnn"]
+
+[ext_resource type="Script" path="res://PlayerInfoTracker.cs" id="1_p36gr"]
+[ext_resource type="Texture2D" uid="uid://dqja1kuegyqgb" path="res://assets/bullets.svg" id="2_0qjb0"]
+[ext_resource type="Texture2D" uid="uid://c6c1xihimr0vq" path="res://assets/health.svg" id="3_sa3vv"]
+
+[node name="CharacterInfoTracker" type="MarginContainer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -544.0
+offset_top = -122.0
+offset_right = 543.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 50
+script = ExtResource("1_p36gr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Ammo" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AmmoCounter" type="HBoxContainer" parent="HBoxContainer/Ammo"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Ammo/AmmoCounter"]
+layout_mode = 2
+theme_override_constants/margin_right = 10
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Ammo/AmmoCounter/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_0qjb0")
+expand_mode = 3
+
+[node name="CurrentAmmo" type="Label" parent="HBoxContainer/Ammo/AmmoCounter"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "10
+"
+
+[node name="Seperator" type="Label" parent="HBoxContainer/Ammo/AmmoCounter"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "/"
+
+[node name="MaxAmmo" type="Label" parent="HBoxContainer/Ammo/AmmoCounter"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "30"
+
+[node name="Seperator" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Health" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HealthCounter" type="HBoxContainer" parent="HBoxContainer/Health"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Health/HealthCounter"]
+layout_mode = 2
+theme_override_constants/margin_right = 10
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Health/HealthCounter/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("3_sa3vv")
+expand_mode = 3
+
+[node name="CurrentHealth" type="Label" parent="HBoxContainer/Health/HealthCounter"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "50"
+
+[node name="Seperator" type="Label" parent="HBoxContainer/Health/HealthCounter"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "/"
+
+[node name="MaxHealth" type="Label" parent="HBoxContainer/Health/HealthCounter"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "200"

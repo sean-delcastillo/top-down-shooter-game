@@ -4,3 +4,7 @@
 
 [resource]
 albedo_texture = ExtResource("1_okvfn")
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv2_triplanar = true
+uv2_world_triplanar = true

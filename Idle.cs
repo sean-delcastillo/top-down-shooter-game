@@ -9,7 +9,13 @@ public partial class Idle : EnemyState
 	[Export]
 	public int InitialPoint { set; get; } = 0;
 
-	public override void Enter(Dictionary _ = null)
+	public override async void Enter(Dictionary _ = null)
+	{
+		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		transition();
+	}
+
+	private void transition()
 	{
 		Dictionary dict = new()
 		{

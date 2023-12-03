@@ -1,0 +1,83 @@
+[gd_scene load_steps=3 format=3 uid="uid://ct2g703c8iqhi"]
+
+[ext_resource type="Script" path="res://ManualPanel.cs" id="1_lpykm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_otrri"]
+bg_color = Color(0.054902, 0.054902, 0.054902, 0.784314)
+shadow_size = 10
+
+[node name="ManualPanel" type="PanelContainer"]
+scale = Vector2(0.960001, 1)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_otrri")
+script = ExtResource("1_lpykm")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "How To Play"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "You will enter the map to steal different loot worth different prices according to their rarity.
+After you steal 3 pieces of loot you can choose to escape."
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Common Loot = 10
+Uncommon Loot = 25
+Rare Loot = 100"
+horizontal_alignment = 1
+
+[node name="Label6" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Upgrades"
+horizontal_alignment = 1
+
+[node name="Label7" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "You can choose to upgrade your health and speed with 
+money gained from taking loot from the map."
+horizontal_alignment = 1
+
+[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Controls"
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "\"WASD\" - Movement
+\"Mouse\" - Aiming
+\"Left Mouse Button\" - Weapon Primary Fire
+\"R\" - Reload"
+horizontal_alignment = 1
+
+[node name="Close" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Close"

@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=3 uid="uid://bjmhkoo1uuyqx"]
+
+[ext_resource type="Script" path="res://CharacterWeapon.cs" id="1_2e082"]
+[ext_resource type="PackedScene" uid="uid://cuolk5evde87q" path="res://bullet_trail.tscn" id="2_w653j"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wcsci"]
+albedo_color = Color(0.254902, 0.254902, 0.254902, 1)
+metallic = 0.91
+metallic_specular = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_pxcfk"]
+material = SubResource("StandardMaterial3D_wcsci")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hdow0"]
+height = 1.03624
+radius = 0.756015
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4ksy"]
+transparency = 1
+albedo_color = Color(0.184314, 0.847059, 0, 0.470588)
+emission_enabled = true
+emission = Color(0.184314, 1, 0.145098, 1)
+emission_energy_multiplier = 10.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uy4lg"]
+transparency = 1
+albedo_color = Color(0.184314, 0.847059, 0, 0.482353)
+emission = Color(0.956863, 0.172549, 0, 1)
+emission_energy_multiplier = 10.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3d2c4"]
+material = SubResource("StandardMaterial3D_uy4lg")
+flip_faces = true
+top_radius = 0.01
+bottom_radius = 0.2
+height = 0.001
+
+[node name="DefaultWeapon" type="Node3D"]
+transform = Transform3D(0.125652, 0, 0, 0, 0.113799, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("1_2e082")
+Damage = 100.0
+FireRate = 100
+MagazineSize = 30
+RangeTrail = ExtResource("2_w653j")
+
+[node name="GunRay" type="RayCast3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(7.95849, 0, 0, 0, 8.78742, 0, 0, 0, 1, -0.00348687, -0.000451088, -0.50107)
+target_position = Vector3(0, 0, -100)
+collision_mask = 3
+debug_shape_custom_color = Color(0.639216, 0.403922, 0, 0.223529)
+debug_shape_thickness = 5
+
+[node name="GunMesh" type="MeshInstance3D" parent="."]
+layers = 2
+mesh = SubResource("BoxMesh_pxcfk")
+skeleton = NodePath("../../BodyMeshes/MeshInstance3D")
+
+[node name="Crowding" type="Area3D" parent="GunMesh"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, -0.135054)
+collision_mask = 3
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GunMesh/Crowding"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_hdow0")
+
+[node name="AimLaser" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 5.96046e-08, -0.500584)
+material_override = SubResource("StandardMaterial3D_e4ksy")
+mesh = SubResource("CylinderMesh_3d2c4")

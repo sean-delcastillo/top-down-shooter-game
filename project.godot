@@ -17,14 +17,15 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-CyclopsAutoload="*res://addons/cyclops_level_builder/cyclops_global_scene.tscn"
-PlayerPrefs="*res://player_prefs.cs"
+PlayerPrefs="*res://PlayerPrefs.cs"
+PlayerProgression="*res://PlayerProgression.cs"
 
 [display]
 
-window/size/viewport_width=960
-window/size/viewport_height=540
-window/stretch/mode="viewport"
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/resizable=false
+window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
 [dotnet]
@@ -33,7 +34,7 @@ project/assembly_name="TopDownGame"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/cyclops_level_builder/plugin.cfg")
+enabled=PackedStringArray("res://addons/qodot/plugin.cfg")
 
 [input]
 

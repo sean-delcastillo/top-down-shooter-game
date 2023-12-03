@@ -1,0 +1,308 @@
+[gd_scene load_steps=11 format=3 uid="uid://bepjfhem0r582"]
+
+[ext_resource type="Script" path="res://SaveFilePanel.cs" id="1_m73m2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lryuh"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apw30"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6g5nk"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="Animation" id="Animation_1qfjo"]
+resource_name = "NotEnoughMoney"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_styles/normal:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.6, 0.6, 0.6, 0), Color(0.6, 0.6, 0.6, 0), Color(1, 0.129412, 0.12549, 0.886275), Color(1, 0.129412, 0.12549, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:theme_override_styles/hover:bg_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.6, 0.6, 0.6, 0), Color(0.6, 0.6, 0.6, 0), Color(1, 0, 0, 1), Color(0.6, 0.6, 0.6, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sxw5k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_styles/normal:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.6, 0.6, 0.6, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:theme_override_styles/hover:bg_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.6, 0.6, 0.6, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sg84d"]
+_data = {
+"NotEnoughMoney": SubResource("Animation_1qfjo"),
+"RESET": SubResource("Animation_sxw5k")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2c0x"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qe847"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ce0or"]
+bg_color = Color(0.933333, 0.12549, 0.137255, 0.784314)
+
+[node name="SaveFilePanel" type="PanelContainer"]
+offset_right = 870.0
+offset_bottom = 78.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+script = ExtResource("1_m73m2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 10
+
+[node name="TitleSection" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MainLabel" type="Label" parent="MarginContainer/VBoxContainer/TitleSection"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Current Save File"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EverythingContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lryuh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/EverythingContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ProgressionContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer"]
+layout_mode = 2
+text = "Progression"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MoneySection" type="HBoxContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection"]
+layout_mode = 2
+
+[node name="CurrentMoneyContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection/PanelContainer/CurrentMoneyContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection/PanelContainer/CurrentMoneyContainer/VBoxContainer"]
+layout_mode = 2
+text = "Money"
+horizontal_alignment = 1
+
+[node name="CurrentMoney" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection/PanelContainer/CurrentMoneyContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "100"
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection"]
+layout_mode = 2
+
+[node name="MostMoneyContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection/PanelContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection/PanelContainer2/MostMoneyContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection/PanelContainer2/MostMoneyContainer/VBoxContainer"]
+layout_mode = 2
+text = "Most Money in One Run"
+horizontal_alignment = 1
+
+[node name="MostMoney" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/ProgressionContainer/PanelContainer/MarginContainer/MoneySection/PanelContainer2/MostMoneyContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "100"
+horizontal_alignment = 1
+
+[node name="UpgradesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer"]
+layout_mode = 2
+text = "Upgrades"
+
+[node name="Upgrades" type="PanelContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Health"
+
+[node name="CurrentHealth" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+text = "300"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+text = "₥500"
+horizontal_alignment = 2
+
+[node name="UpgradeHealth" type="Button" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_apw30")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6g5nk")
+text = "Health +50, -0.5 Speed"
+
+[node name="UpgradeHealthNotEnoughMoney" type="AnimationPlayer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer3/UpgradeHealth"]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_sg84d")
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Speed"
+
+[node name="CurrentSpeed" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+text = "3"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+text = "₥500"
+horizontal_alignment = 2
+
+[node name="UpgradeSpeed" type="Button" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.5
+theme_override_styles/normal = SubResource("StyleBoxFlat_f2c0x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_qe847")
+text = "Speed +0.5"
+
+[node name="UpgradeSpeedNotEnoughMoney" type="AnimationPlayer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/UpgradesContainer/Upgrades/MarginContainer/VBoxContainer/HBoxContainer2/UpgradeSpeed"]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_sg84d")
+}
+
+[node name="SaveOperationsContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+
+[node name="Delete" type="Button" parent="MarginContainer/VBoxContainer/EverythingContainer/VBoxContainer/SaveOperationsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.14902, 0.121569, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_styles/hover = SubResource("StyleBoxFlat_ce0or")
+text = "Delete Save"

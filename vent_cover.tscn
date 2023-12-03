@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvb2cgbnxdlxy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iusq2"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(0.839216, 0.0980392, 0, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_ulagf"]
+material = SubResource("StandardMaterial3D_iusq2")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s8syg"]
+size = Vector3(0.372675, 2.70557, 1.25257)
+
+[node name="VentCover" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.3866, 12.7518, -82.2438)
+collision_layer = 2
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.360231, 0, 0, 0, 2.72695, 0, 0, 0, 1.22601, 0, -0.699329, -0.0567703)
+mesh = SubResource("BoxMesh_ulagf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.689034, -0.0588913)
+shape = SubResource("BoxShape3D_s8syg")

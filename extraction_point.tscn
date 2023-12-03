@@ -19,7 +19,6 @@ size = Vector3(2, 2, 2)
 
 [node name="ExtractionPoint" type="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.1041, 0, -35.5108)
-visible = false
 script = ExtResource("1_1sn5s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

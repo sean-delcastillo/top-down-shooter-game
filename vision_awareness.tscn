@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://iv5jur3ficmy"]
+
+[ext_resource type="Script" path="res://VisionAwareness.cs" id="1_wwkjq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qpjqg"]
+radius = 20.0
+
+[node name="VisionAwareness" type="Node3D"]
+script = ExtResource("1_wwkjq")
+FieldOfView = 90.0
+
+[node name="ForwardCast" type="RayCast3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.399498, -0.652044)
+target_position = Vector3(0, 0, -19)
+collision_mask = 3
+
+[node name="VisionCast" type="RayCast3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.73972e-08, 0.399234, -0.669046)
+target_position = Vector3(0, 0, -20)
+collision_mask = 3
+
+[node name="AwarenessArea" type="Area3D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AwarenessArea"]
+shape = SubResource("SphereShape3D_qpjqg")
+
+[node name="ForwardDebug" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.522347)
+target_position = Vector3(0, 0, -1)
+debug_shape_custom_color = Color(0.509804, 0.682353, 0.207843, 1)
+
+[node name="ContactDebug" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.530058)
+target_position = Vector3(0, 0, -1)
+debug_shape_custom_color = Color(1, 0.87451, 0, 1)
+
+[node name="UpdateTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.1
+autostart = true
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.73972e-08, -0.493002, -0.669046)
+light_color = Color(1, 0.490196, 0.235294, 1)
+light_energy = 5.0
+light_indirect_energy = 0.0
+light_size = 0.002
+shadow_enabled = true
+spot_range = 20.0
+spot_attenuation = 1e-05
+spot_angle_attenuation = 1e-05

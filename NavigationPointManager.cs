@@ -1,9 +1,6 @@
 using Godot;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Security.Cryptography;
+
 public partial class NavigationPointManager : Node
 {
 	public int CurrentRouteIndex { set; get; } = 0;

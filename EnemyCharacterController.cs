@@ -1,9 +1,5 @@
 using Godot;
 using Godot.Collections;
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Text.RegularExpressions;
 
 public partial class EnemyCharacterController : CharacterBody3D
 {
@@ -26,7 +22,7 @@ public partial class EnemyCharacterController : CharacterBody3D
 	public int InitialPoint { set; get; } = 0;
 
 	public NavigationAgent3D NavAgent;
-	public VisionAwareness _visionAwareness;
+	private VisionAwareness _visionAwareness;
 
 	public Vector3 _newInitNavPointGlobalPosition;
 	public Vector3 _currentNavPointGlobalPosition;
@@ -37,7 +33,14 @@ public partial class EnemyCharacterController : CharacterBody3D
 		_visionAwareness = GetNode<VisionAwareness>("VisionAwareness");
 
 		StateManager.Character = this;
+		StateManager.NavAgent = NavAgent;
+		StateManager.NavManager = NavManager;
 		NavAgent.VelocityComputed += OnNavAgentVelocityComputed;
+
+		StateManager.VisionAwareness = _visionAwareness;
+
+		_visionAwareness.HostileContactDetected += StateManager.HostileDetected;
+		_visionAwareness.HostileContactLost += StateManager.HostileLost;
 	}
 
 	public override void _Process(double delta)
@@ -52,14 +55,6 @@ public partial class EnemyCharacterController : CharacterBody3D
 	{
 		if (IsComputerControlled)
 		{
-			//FaceVisualContacts();
-			//FireControl();
-
-			/*
-			Vector3 targetPosition = GetClosestPointOnMap(NavManager.GetCurrentPointGlobalPosition());
-			NavAgent.TargetPosition = targetPosition;
-			*/
-
 			MoveToNavAgentTarget();
 			FaceMovementDirection();
 		}
@@ -106,6 +101,7 @@ public partial class EnemyCharacterController : CharacterBody3D
 		{
 			Vector3 lookAtDirection = Velocity;
 			lookAtDirection.Y = 0;
+
 			LookAt(Transform.Origin + lookAtDirection, Vector3.Up);
 		}
 	}
@@ -113,10 +109,19 @@ public partial class EnemyCharacterController : CharacterBody3D
 	public void TakeDamage(double damage, Vector3 from)
 	{
 		CharacterInformation.Health -= damage;
+
+		ReactToDamage(from);
+	}
+
+	private async void ReactToDamage(Vector3 from)
+	{
 		Dictionary dict = new()
 		{
 			{ "LastKnownLocation", from }
 		};
+
+		await ToSignal(GetTree().CreateTimer(0.35), SceneTreeTimer.SignalName.Timeout);
+
 		StateManager.TransitionTo("PursuingEnemy", dict);
 	}
 

@@ -1,34 +1,31 @@
 [gd_scene load_steps=6 format=3 uid="uid://c34uikm505phr"]
 
-[ext_resource type="Script" path="res://CollectableObjective.cs" id="1_d6kd3"]
+[ext_resource type="Script" path="res://CollectableObjective.cs" id="1_2nqd2"]
+[ext_resource type="Material" uid="uid://htguiqk2yfsk" path="res://gold_objective.tres" id="2_xkc3h"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_v54c1"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_2jgky"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xu6wb"]
-albedo_color = Color(1, 0.368627, 0, 1)
-metallic = 1.0
-emission_enabled = true
-emission = Color(0.913725, 0.615686, 0, 1)
-emission_energy_multiplier = 3.64
+resource_local_to_scene = true
+material = ExtResource("2_xkc3h")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_0fuwo"]
 radius = 1.0
 
 [node name="Objective" type="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07735, 0)
-script = ExtResource("1_d6kd3")
+script = ExtResource("1_2nqd2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_v54c1")
 disabled = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Mesh" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
 mesh = SubResource("SphereMesh_2jgky")
-surface_material_override/0 = SubResource("StandardMaterial3D_xu6wb")
 
 [node name="CollectionArea" type="Area3D" parent="."]
+monitoring = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CollectionArea"]
 shape = SubResource("SphereShape3D_0fuwo")

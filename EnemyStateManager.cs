@@ -1,7 +1,6 @@
 using Godot;
 using Godot.Collections;
-using System;
-using System.Linq;
+using System.Collections.Generic;
 
 public partial class EnemyStateManager : Node
 {
@@ -13,13 +12,20 @@ public partial class EnemyStateManager : Node
 
 	public EnemyState CurrentState { set; get; }
 	public EnemyCharacterController Character;
+	public NavigationPointManager NavManager;
+	public NavigationAgent3D NavAgent;
+	public VisionAwareness VisionAwareness;
 
 	private int _lastRouteIndex;
 	private int _lastPointIndex;
+	private Vector3 _lastKnownHostileLocation;
+	private Vector3 _lastKnownAwarenessLocation;
+	private List<string> _possibleStates;
 
 	public override void _Ready()
 	{
 		//await ToSignal(Owner, Node.SignalName.Ready);
+		_possibleStates = new();
 
 		CurrentState = InitialState;
 
@@ -27,9 +33,11 @@ public partial class EnemyStateManager : Node
 		{
 			if (child is EnemyState state)
 			{
+				_possibleStates.Add(state.Name);
 				state.StateManager = this;
 			}
 		}
+
 		CurrentState.Enter();
 	}
 
@@ -46,18 +54,23 @@ public partial class EnemyStateManager : Node
 	public void TransitionTo(string StateName, Dictionary TransitionData = null)
 	{
 		//GD.Print("Transitioning State to " + StateName + " from " + CurrentState.Name);
-		CurrentState.Exit();
-		CurrentState = GetNode<EnemyState>(StateName);
-		CurrentState.Enter(TransitionData);
-		EmitSignal(SignalName.StateTransisioned, StateName);
+		if (_possibleStates.Contains(StateName))
+		{
+			var prevState = CurrentState;
+			CurrentState.Exit();
+			CurrentState = GetNode<EnemyState>(StateName);
+			CurrentState.Enter(TransitionData);
+			//GD.Print("Changing State From " + prevState.Name + " to " + CurrentState.Name);
+			EmitSignal(SignalName.StateTransisioned, StateName);
+		}
 	}
 
 	public void SetCurrentRoute(int InitialRoute, int InitialPoint)
 	{
 		Dictionary dict = new()
 		{
-			{ "Route", InitialRoute },
-			{ "Point", InitialPoint }
+			{"Route", InitialRoute},
+			{"Point", InitialPoint}
 		};
 		TransitionTo("NavigatingToPoint", dict);
 	}
@@ -66,5 +79,21 @@ public partial class EnemyStateManager : Node
 	{
 		_lastRouteIndex = routeIndex;
 		_lastPointIndex = pointIndex;
+	}
+
+	public void HostileDetected(Node3D hostile)
+	{
+		if (CurrentState is not EngagingEnemy)
+		{
+			CurrentState.HostileDetected(hostile);
+		}
+	}
+
+	public void HostileLost(Node3D hostile)
+	{
+		if (CurrentState is EngagingEnemy currentState)
+		{
+			currentState.HostileLost(hostile);
+		}
 	}
 }

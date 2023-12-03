@@ -3,8 +3,9 @@ using System;
 
 public partial class CrosshairController : Control
 {
-	readonly private Vector2 positionOffset = new(-13, -23);
-	private Vector2 _position;
+	public PlayerCharacter Player { set; get; }
+
+	readonly private Vector2 positionOffset = new(-10, -100);
 	private TextureRect _spread;
 	private TextureRect _center;
 
@@ -14,6 +15,11 @@ public partial class CrosshairController : Control
 		_center = GetNode<TextureRect>("Center");
 	}
 
+	public override void _Process(double delta)
+	{
+		Position = GetViewport().GetMousePosition() + positionOffset;
+	}
+
 	public void UpdateSpreadScale(float weaponStability)
 	{
 		float scaleDueToInstability = (float)(1.5 - weaponStability);
@@ -21,10 +27,5 @@ public partial class CrosshairController : Control
 		else { scaleDueToInstability = Math.Clamp(scaleDueToInstability, 0, 2); }
 
 		_spread.Scale = new Vector2(scaleDueToInstability, scaleDueToInstability);
-	}
-
-	public void UpdateCrosshairPosition(Vector2 mousePosition)
-	{
-		Position = mousePosition + positionOffset;
 	}
 }

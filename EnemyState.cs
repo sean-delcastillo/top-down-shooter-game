@@ -26,4 +26,14 @@ public partial class EnemyState : Node
     public virtual void PhysicsUpdate(double Delta)
     {
     }
+
+    public virtual void HostileDetected(Node3D hostile)
+    {
+
+    }
+
+    public virtual void HostileLost(Node3D hostile)
+    {
+
+    }
 }

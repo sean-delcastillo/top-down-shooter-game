@@ -1,0 +1,14 @@
+[remap]
+
+importer="qodot.map"
+type="Resource"
+uid="uid://dc3r75u5vmx7g"
+path="res://.godot/imported/TestingGrounds.map-1fdd97cc9ce3aa529d489babb3dbdefa.tres"
+
+[deps]
+
+source_file="res://TestingGrounds.map"
+dest_files=["res://.godot/imported/TestingGrounds.map-1fdd97cc9ce3aa529d489babb3dbdefa.tres"]
+
+[params]
+

@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://db8itebwio612"]
+
+[ext_resource type="Script" path="res://RandomDoor.cs" id="1_htvwo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rb5qh"]
+size = Vector3(3.63063, 2.99134, 2.40288)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s8v20"]
+albedo_color = Color(1, 0.54902, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_unf1g"]
+material = SubResource("StandardMaterial3D_s8v20")
+size = Vector3(3.625, 2.975, 2.385)
+
+[node name="RandomDoor" type="StaticBody3D"]
+script = ExtResource("1_htvwo")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+unique_name_in_owner = true
+shape = SubResource("BoxShape3D_rb5qh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_unf1g")

@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopDownGame", "TopDownGame.csproj", "{81E64912-5390-45B9-9ECE-AE62A790251E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopDownGame", "TopDownGame.csproj", "{79E3B530-4284-427C-A3F4-7007BB3AE65D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{81E64912-5390-45B9-9ECE-AE62A790251E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81E64912-5390-45B9-9ECE-AE62A790251E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81E64912-5390-45B9-9ECE-AE62A790251E}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{81E64912-5390-45B9-9ECE-AE62A790251E}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{81E64912-5390-45B9-9ECE-AE62A790251E}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{81E64912-5390-45B9-9ECE-AE62A790251E}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{79E3B530-4284-427C-A3F4-7007BB3AE65D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79E3B530-4284-427C-A3F4-7007BB3AE65D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79E3B530-4284-427C-A3F4-7007BB3AE65D}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{79E3B530-4284-427C-A3F4-7007BB3AE65D}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{79E3B530-4284-427C-A3F4-7007BB3AE65D}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{79E3B530-4284-427C-A3F4-7007BB3AE65D}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

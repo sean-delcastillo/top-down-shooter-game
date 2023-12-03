@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccida7lygditg"]
+
+[ext_resource type="Script" path="res://BoolObjective.cs" id="1_y8wxk"]
+
+[node name="BoolObjective" type="PanelContainer"]
+offset_right = 434.0
+offset_bottom = 52.0
+size_flags_vertical = 3
+script = ExtResource("1_y8wxk")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ObjectiveName" type="Label" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 9.0
+theme_override_font_sizes/font_size = 25
+text = "ObjectiveName"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 2.0
+
+[node name="BoolLabel" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 25
+text = "BoolLabel"

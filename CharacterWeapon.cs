@@ -1,6 +1,5 @@
 using Godot;
 using System;
-
 /// <summary>
 /// For weapons that a character can have and activate.
 /// </summary>
@@ -12,8 +11,6 @@ public partial class CharacterWeapon : Node3D
 	public delegate void WeaponStabilityEventHandler(double Stability);
 
 	[Export]
-	public RayCast3D GunRay { set; get; }
-	[Export]
 	public float Damage { set; get; }
 	[Export]
 	public int FireRate { set; get; }
@@ -22,7 +19,8 @@ public partial class CharacterWeapon : Node3D
 	[Export]
 	public PackedScene RangeTrail { set; get; }
 
-	private bool _canFire = true;
+	private MeshInstance3D _aimLaser;
+	private RayCast3D _gunRay;
 	private Area3D _collisionArea;
 	private Timer _fireFrequency;
 	private Timer _recoilRecovery;
@@ -34,12 +32,13 @@ public partial class CharacterWeapon : Node3D
 	};
 	private RandomNumberGenerator _rand = new();
 	private int _bulletsInMagazine;
-	private MeshInstance3D _laser;
+	private bool _canFire = true;
 
 	public override void _Ready()
 	{
-		_collisionArea = GetNode<Area3D>("GunMesh/CrowdingCollisionArea");
-		_laser = GetNode<MeshInstance3D>("AimLaser");
+		_collisionArea = GetNode<Area3D>("%Crowding");
+		_aimLaser = GetNode<MeshInstance3D>("%AimLaser");
+		_gunRay = GetNode<RayCast3D>("%GunRay");
 
 		_fireFrequency = new()
 		{
@@ -94,23 +93,23 @@ public partial class CharacterWeapon : Node3D
 		if (!_fireFrequency.IsStopped() || !_canFire) { return; }
 		else
 		{
-			var forward = GunRay.TargetPosition;
-			var recoilRay = CalculateDeflectedRay(GunRay.TargetPosition);
-			GunRay.TargetPosition = recoilRay;
-			GunRay.ForceRaycastUpdate();
+			var forward = _gunRay.TargetPosition;
+			var recoilRay = CalculateDeflectedRay(_gunRay.TargetPosition);
+			_gunRay.TargetPosition = recoilRay;
+			_gunRay.ForceRaycastUpdate();
 
-			if (GunRay.IsColliding())
+			if (_gunRay.IsColliding())
 			{
-				DrawBulletTrail(GunRay.GetCollisionPoint());
-				var target = GunRay.GetCollider() as Node3D;
+				DrawBulletTrail(_gunRay.GetCollisionPoint());
+				var target = _gunRay.GetCollider() as Node3D;
 				target.Call("TakeDamage", Damage, GlobalPosition);
-				target.Call("DamageAtLocation", GunRay.GetCollisionPoint(), GunRay.GetCollisionNormal());
+				target.Call("DamageAtLocation", _gunRay.GetCollisionPoint(), _gunRay.GetCollisionNormal());
 			}
 			else
 			{
-				DrawBulletTrail(GlobalTransform * GunRay.TargetPosition);
+				DrawBulletTrail(GlobalTransform * _gunRay.TargetPosition);
 			}
-			GunRay.TargetPosition = forward;
+			_gunRay.TargetPosition = forward;
 			if (_stability >= 0.2)
 			{
 				_stability -= 0.2;
@@ -160,22 +159,22 @@ public partial class CharacterWeapon : Node3D
 	/// </summary>
 	private void UpdateAimLaser()
 	{
-		GunRay.ForceRaycastUpdate();
-		if (GunRay.IsColliding())
+		_gunRay.ForceRaycastUpdate();
+		if (_gunRay.IsColliding())
 		{
-			Vector3 collision = GunRay.ToLocal(GunRay.GetCollisionPoint());
+			Vector3 collision = _gunRay.ToLocal(_gunRay.GetCollisionPoint());
 			float laserLength = Math.Clamp(collision.Z, -3, 3);
-			_laser.Mesh.Set("height", laserLength);
-			_laser.Position = new Vector3(_laser.Position.X, _laser.Position.Y, laserLength / 2);
+			_aimLaser.Mesh.Set("height", laserLength);
+			_aimLaser.Position = new Vector3(_aimLaser.Position.X, _aimLaser.Position.Y, laserLength / 2);
 		}
 
 		if (!_canFire)
 		{
-			_laser.Visible = false;
+			_aimLaser.Visible = false;
 		}
 		else
 		{
-			_laser.Visible = true;
+			_aimLaser.Visible = true;
 		}
 	}
 
@@ -217,7 +216,7 @@ public partial class CharacterWeapon : Node3D
 	private void DrawBulletTrail(Vector3 to)
 	{
 		var bulletTrail = RangeTrail.Instantiate<BulletTrail>();
-		bulletTrail.Init(GunRay.GlobalPosition, to);
+		bulletTrail.Init(_gunRay.GlobalPosition, to);
 		GetTree().Root.AddChild(bulletTrail);
 	}
 }

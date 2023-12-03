@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://clms80kf183ym"]
+
+[ext_resource type="PackedScene" uid="uid://cdln6l7pggnaa" path="res://player_death_panel.tscn" id="1_211u7"]
+
+[node name="PlayerWinPanel" instance=ExtResource("1_211u7")]
+
+[node name="Label" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
+text = "𝖄𝖔𝖚 𝕲𝖔𝖙 𝕺𝖚𝖙"
+
+[node name="PointLight2D" parent="PanelContainer/MarginContainer/VBoxContainer/Label" index="1"]
+position = Vector2(595.5, 170)
+scale = Vector2(19.0781, 3.89063)
+
+[node name="Label2" parent="PanelContainer/MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" index="0"]
+text = "Money Gained On Run"

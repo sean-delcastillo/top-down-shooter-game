@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://do7soc0tqfmxk"]
+
+[ext_resource type="Script" path="res://PauseMenu.cs" id="1_gjw0o"]
+
+[node name="PauseMenu" type="Control"]
+process_mode = 2
+visible = false
+layout_mode = 3
+anchor_left = 0.39
+anchor_top = 0.425
+anchor_right = 0.615
+anchor_bottom = 0.58
+offset_left = 0.200012
+offset_top = -12.0
+offset_right = 1.19995
+offset_bottom = -0.399963
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_gjw0o")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 434.0
+offset_bottom = 178.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SplitContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Continue" type="Button" parent="Panel/MarginContainer/SplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Continue"
+
+[node name="Abandon" type="Button" parent="Panel/MarginContainer/SplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Abandon Run"
+
+[node name="Quit" type="Button" parent="Panel/MarginContainer/SplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Quit To Desktop"

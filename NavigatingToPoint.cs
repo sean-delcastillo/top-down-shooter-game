@@ -6,29 +6,37 @@ public partial class NavigatingToPoint : EnemyState
 	private int _routeIndex;
 	private int _pointIndex;
 
-	public override void Enter(Dictionary RoutePoint = null)
+	public override void Enter(Dictionary RoutePoint)
 	{
 		if (RoutePoint != null)
 		{
 			_routeIndex = (int)RoutePoint["Route"];
 			_pointIndex = (int)RoutePoint["Point"];
-			StateManager.Character.NavManager.SetCurrentRoute(_routeIndex, _pointIndex);
+			StateManager.NavManager.SetCurrentRoute(_routeIndex, _pointIndex);
 		}
 		else
 		{
-			var point = StateManager.Character.NavManager.GetCurrentPoint();
+			var point = StateManager.NavManager.GetCurrentPoint();
 			_routeIndex = point.RouteId;
 			_pointIndex = point.RouteOrder;
 		}
-		Vector3 targetPosition = StateManager.Character.GetClosestPointOnMap(StateManager.Character.NavManager.GetCurrentPointGlobalPosition());
+		Vector3 targetPosition = StateManager.Character.GetClosestPointOnMap(StateManager.NavManager.GetCurrentPointGlobalPosition());
 
 		//GD.Print("Going to Point " + _routeIndex + " " + _pointIndex + " @ " + targetPosition);
 
-		StateManager.Character.NavAgent.TargetPosition = targetPosition;
+		StateManager.NavAgent.TargetPosition = targetPosition;
+
+		StateManager.NavAgent.TargetReached += InPosition;
+	}
+
+	public override void Exit()
+	{
+		StateManager.NavAgent.TargetReached -= InPosition;
 	}
 
 	public override void Update(double Delta)
 	{
+		/* Replaced by StateManager's HostileDetected method
 		if (StateManager.Character._visionAwareness.BodiesInVisualContact.Count > 1)
 		{
 			var seenEntity = StateManager.Character._visionAwareness.BodiesInVisualContact[0];
@@ -43,17 +51,27 @@ public partial class NavigatingToPoint : EnemyState
 			};
 			StateManager.TransitionTo("EngagingEnemy", dict);
 		}
+		*/
+	}
 
-		if (StateManager.Character.NavAgent.IsNavigationFinished())
+	public void InPosition()
+	{
+		Dictionary dict = new() {
+			{ "Route", _routeIndex},
+			{ "Point", _pointIndex}
+		};
+
+		//GD.Print("Reached Point " + _routeIndex + " " + _pointIndex);
+
+		StateManager.TransitionTo("IdleAtPoint", dict);
+	}
+
+	public override void HostileDetected(Node3D hostile)
+	{
+		Dictionary dict = new()
 		{
-			Dictionary dict = new() {
-				{ "Route", _routeIndex},
-				{ "Point", _pointIndex}
-			};
-
-			//GD.Print("Reached Point " + _routeIndex + " " + _pointIndex);
-
-			StateManager.TransitionTo("IdleAtPoint", dict);
-		}
+			{"SeenEnemy", hostile}
+		};
+		StateManager.TransitionTo("EngagingEnemy", dict);
 	}
 }

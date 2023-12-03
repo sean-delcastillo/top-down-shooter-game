@@ -3,9 +3,6 @@ using System;
 
 public partial class CameraController : Node3D
 {
-    [Signal]
-    public delegate void MousePositionInWorldChangedEventHandler(Vector3 collision);
-
     [Export]
     public Node3D CameraTarget { get; set; }
 
@@ -26,17 +23,21 @@ public partial class CameraController : Node3D
         }
     }
 
+    public Camera3D Camera;
+
     private const float RAYCAST_LENGTH = 100f;
     private const float DEFAULT_SLERP_WEIGHT = 4f / 5f;
-
-    private Camera3D _camera;
     private float _cameraFollowSlerpWeight = DEFAULT_SLERP_WEIGHT;
     private Vector3 _mousePositionInWorld;
     private bool _isValidMousePosition = false;
 
     public override void _Ready()
     {
-        _camera = GetNode<Camera3D>("Camera3D");
+        Camera = GetNode<Camera3D>("Camera3D");
+
+        // Calculate Rotation based on offset values to have CameraTarget in middle of frame
+        var angle = Math.Atan(YOffset / ZOffset);
+        Rotate(Vector3.Left, (float)angle + (float)(5 * Math.PI / 180));
     }
 
     public override void _PhysicsProcess(double delta)
@@ -44,25 +45,6 @@ public partial class CameraController : Node3D
         if (CameraTarget != null)
         {
             UpdateCameraPosition();
-            //LookAt(CameraTarget.Position);
-        }
-
-        UpdateMousePositionInWorld();
-        EmitSignal(SignalName.MousePositionInWorldChanged, _mousePositionInWorld);
-    }
-
-    private void UpdateMousePositionInWorld()
-    {
-        var from = _camera.ProjectRayOrigin(GetViewport().GetMousePosition());
-        var to = from + _camera.ProjectRayNormal(GetViewport().GetMousePosition()) * RAYCAST_LENGTH;
-
-        var spaceState = GetWorld3D().DirectSpaceState;
-        var query = PhysicsRayQueryParameters3D.Create(from, to, (uint)Math.Pow(2, 32 - 1));
-        var result = spaceState.IntersectRay(query);
-
-        if (result.ContainsKey("position"))
-        {
-            _mousePositionInWorld = (Vector3)result["position"];
         }
     }
 
@@ -75,11 +57,14 @@ public partial class CameraController : Node3D
             CameraTarget.Position.Z + ZOffset
         );
 
-        var mouseDirection = zeroPosition.DirectionTo(_mousePositionInWorld);
-        mouseDirection.Y = 0;
+        var mousePositionOnViewport = GetViewport().GetMousePosition();
+        var viewportSize = GetViewport().GetVisibleRect().Size;
 
-        var mouseDistance = zeroPosition.DistanceTo(_mousePositionInWorld);
+        var mouseDisplacementRatioFromMiddleOfViewport = (mousePositionOnViewport / viewportSize) - new Vector2(0.5f, 0.5f);
+        var mouseDisplacementFromMiddleOfViewport = mouseDisplacementRatioFromMiddleOfViewport.Length();
 
-        Position = zeroPosition + mouseDirection * (float)Math.Pow(mouseDistance, 1 / 1.5);
+        var mouseDisplacement = new Vector3(mouseDisplacementRatioFromMiddleOfViewport.X, 0, mouseDisplacementRatioFromMiddleOfViewport.Y);
+
+        Position = zeroPosition + mouseDisplacement * ((float)Math.Pow(mouseDisplacementFromMiddleOfViewport + 1, 3));
     }
 }

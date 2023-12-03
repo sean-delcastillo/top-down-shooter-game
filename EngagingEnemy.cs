@@ -1,33 +1,77 @@
 using Godot;
 using Godot.Collections;
-using System;
 
 public partial class EngagingEnemy : EnemyState
 {
+    public CharacterBody3D CurrentlyEngagedHostile;
     private Vector3 _lastKnownLocation;
+    private Timer _timer;
+
+    public override void _Ready()
+    {
+        base._Ready();
+
+        _timer = new()
+        {
+            WaitTime = 0.35,
+            OneShot = true
+        };
+        AddChild(_timer);
+    }
 
     public override void Enter(Dictionary SeenEnemy = null)
     {
-        _lastKnownLocation = ((Node3D)SeenEnemy["SeenEnemy"]).GlobalPosition;
+        StateManager.NavAgent.TargetPosition = StateManager.Character.GlobalPosition;
+        CurrentlyEngagedHostile = (CharacterBody3D)SeenEnemy["SeenEnemy"];
+        _lastKnownLocation = CurrentlyEngagedHostile.GlobalPosition;
     }
 
-    public override void Update(double Delta)
+    public override void Exit()
     {
-        if (StateManager.Character._visionAwareness.BodiesInVisualContact.Count < 1)
-        {
-            Dictionary dict = new() {
-                { "LastKnownLocation", _lastKnownLocation}
-            };
-            StateManager.TransitionTo("PursuingEnemy", dict);
-        }
+        _timer.Stop();
     }
 
     public override void PhysicsUpdate(double Delta)
     {
-        StateManager.Character.LookAt(_lastKnownLocation);
-        if (StateManager.Character._visionAwareness.Facing != null && !StateManager.Character._visionAwareness.Facing.IsInGroup("Enemies"))
+        if (StateManager.VisionAwareness.IsFacing(CurrentlyEngagedHostile))
         {
-            StateManager.Character.Weapon?.PrimaryAction();
+            HandleShooting();
         }
+
+        StateManager.Character.LookAt(_lastKnownLocation, Vector3.Up);
+
+        if (StateManager.VisionAwareness.CanSeeBody(CurrentlyEngagedHostile))
+        {
+            _lastKnownLocation = CurrentlyEngagedHostile.GlobalPosition;
+        }
+        else
+        {
+            Dictionary dict = new()
+            {
+                {"LastKnownLocation", _lastKnownLocation}
+            };
+
+            StateManager.TransitionTo("PursuingEnemy", dict);
+        }
+    }
+
+    /*
+    public override void HostileLost(Node3D hostile)
+    {
+        if (hostile == CurrentlyEngagedHostile)
+        {
+            Dictionary dict = new()
+            {
+                {"LastKnownLocation", hostile.GlobalPosition}
+            };
+
+            StateManager.TransitionTo("PursuingEnemy", dict);
+        }
+    }
+    */
+
+    private void HandleShooting()
+    {
+        StateManager.Character.Weapon?.PrimaryAction();
     }
 }

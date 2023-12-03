@@ -1,64 +1,70 @@
 using Godot;
 using System;
-using System.Security.Cryptography;
 
 public partial class ui : CanvasLayer
 {
 	[Signal]
-	public delegate void SaveAndQuitEventHandler();
+	public delegate void AbandonRunEventHandler();
 	[Signal]
-	public delegate void QuitEventHandler();
+	public delegate void QuitToDesktopEventHandler();
 
-	public PlayerCharacterController Player { set; get; }
+	[Export]
+	public ObjectiveManager ObjectiveManager { set; get; }
+
+	public PlayerCharacter Player { set; get; }
 	public PauseMenu PauseMenu { set; get; }
+	public ObjectiveTracker ObjectiveTracker;
 
-	private Label _currentAmmo;
-	private Label _maxAmmo;
-	private Label _currentHealth;
-	private Label _maxHealth;
+	private PlayerInfoTracker _playerInfo;
 	private Resource _mousePointer = ResourceLoader.Load("res://assets/CrosshairCenter.png");
 	private CrosshairController _crosshair;
 	private TextureRect _crosshairSpread;
 	private Vector2 _mousePosition;
 	private Vector2 _mouseVelocity;
 	private double _weaponStability;
-	private ObjectiveManager _objectiveManager;
 	private Label _mcguffinsCounter;
 	private Label _mcguffinsMax;
 	private Panel _extractNotif;
+	//private PlayerDeathPanel _playerDeath;
 
 	public override void _Ready()
 	{
-		_currentAmmo = GetNode<Label>("Control/PlayerInfo/AmmoCounter/AmmoInMagazine");
-		_maxAmmo = GetNode<Label>("Control/PlayerInfo/AmmoCounter/MaxAmmoInMagazine");
-		_currentHealth = GetNode<Label>("Control/PlayerInfo/HealthCounter/CurrentHealth");
-		_maxHealth = GetNode<Label>("Control/PlayerInfo/HealthCounter/MaximumHealth");
-		_crosshair = GetNode<CrosshairController>("Crosshair");
-		PauseMenu = GetNode<PauseMenu>("Pause");
-		_objectiveManager = GetNode<ObjectiveManager>("../ObjectiveManager");
+		_playerInfo = GetNode<PlayerInfoTracker>("%CharacterInfoTracker");
+		_crosshair = GetNode<CrosshairController>("%Crosshair");
+		PauseMenu = GetNode<PauseMenu>("%PauseMenu");
+		ObjectiveTracker = GetNode<ObjectiveTracker>("%ObjectiveTracker");
+		//_playerDeath = GetNode<PlayerDeathPanel>("%PlayerDeathPanel");
 
-		_mcguffinsCounter = GetNode<Label>("ObjectiveTracker/McguffinsCounter/VBoxContainer/Collected/Current");
-		_mcguffinsMax = GetNode<Label>("ObjectiveTracker/McguffinsCounter/VBoxContainer/Collected/Total");
-		_extractNotif = GetNode<Panel>("ObjectiveTracker/ExtractNotification");
+		_crosshair.Player = Player;
 
-		//Input.SetCustomMouseCursor(_mousePointer, hotspot: new Vector2(13, 23));
 		Input.MouseMode = Input.MouseModeEnum.Hidden;
 
-		_objectiveManager.McguffinCollected += OnMcguffinCollected;
-		_objectiveManager.AllMcguffinsCollected += OnAllMcguffinsCollected;
+		ObjectiveManager.CollectableCollected += ObjectiveTracker.OnObjectiveManagerCollectibleCollected;
+		ObjectiveManager.AllCollectableCollected += ObjectiveTracker.OnObjectiveManagerAllCollectableCollected;
+		ObjectiveManager.ExtractionsActivated += ObjectiveTracker.OnObjectiveManagerExtractionsActivated;
 
-		PauseMenu.SaveAndQuit += OnSaveAndQuit;
-		PauseMenu.Quit += OnQuit;
+		PauseMenu.AbandonRun += OnPauseMenuAbandonRun;
+		PauseMenu.QuitToDesktop += OnPauseMenuQuitToDesktopToDesktop;
 	}
 
-	private void OnSaveAndQuit()
+	public void SetPlayerInfoHealth(int currentHealth, int maxHealth)
 	{
-		EmitSignal(SignalName.SaveAndQuit);
+		_playerInfo.SetHealth(currentHealth, maxHealth);
 	}
 
-	private void OnQuit()
+	public void SetPlayerInfoAmmo(int currentAmmo, int maxAmmo)
 	{
-		EmitSignal(SignalName.Quit);
+		_playerInfo.SetAmmo(currentAmmo, maxAmmo);
+	}
+
+	private void OnPauseMenuAbandonRun()
+	{
+		EmitSignal(SignalName.AbandonRun);
+	}
+
+	private void OnPauseMenuQuitToDesktopToDesktop()
+	{
+		EmitSignal(SignalName.QuitToDesktop);
 	}
 
 	private void OnMcguffinCollected(int currentCount, int maxCount)
@@ -79,7 +85,6 @@ public partial class ui : CanvasLayer
 
 	private void UpdateCrosshair()
 	{
-		_crosshair.UpdateCrosshairPosition(_mousePosition);
 		_crosshair.UpdateSpreadScale((float)_weaponStability);
 	}
 
@@ -92,23 +97,48 @@ public partial class ui : CanvasLayer
 		}
 	}
 
-	public void Init()
+	public void PlayerDied(int moneyLost)
 	{
-		Player.HealthChange += OnPlayerHealthChange;
-		Player.Weapon.AmmoChange += OnWeaponAmmoChange;
-		Player.Weapon.WeaponStability += OnWeaponStability;
+		PackedScene playerDeath = GD.Load<PackedScene>("res://player_death_panel.tscn");
+		PlayerDeathPanel deathPanel = playerDeath.Instantiate<PlayerDeathPanel>();
+
+		AddChild(deathPanel);
+
+		Input.MouseMode = Input.MouseModeEnum.Visible;
+
+		deathPanel.Visible = true;
+		deathPanel.MoneyLost = moneyLost;
+
+		_playerInfo.Visible = false;
+		_crosshair.Visible = false;
+		ObjectiveTracker.Visible = false;
 	}
 
-	private void OnPlayerHealthChange(int health, int oldHealth, int maxHealth)
+	public void PlayerWon(int moneyWon)
 	{
-		_currentHealth.Text = health.ToString();
-		_maxHealth.Text = maxHealth.ToString();
+		PackedScene playerWin = GD.Load<PackedScene>("res://player_win_panel.tscn");
+		PlayerDeathPanel winPanel = playerWin.Instantiate<PlayerDeathPanel>();
+
+		AddChild(winPanel);
+
+		Input.MouseMode = Input.MouseModeEnum.Visible;
+
+		winPanel.Visible = true;
+		winPanel.MoneyLost = moneyWon;
+
+		_playerInfo.Visible = false;
+		_crosshair.Visible = false;
+		ObjectiveTracker.Visible = false;
 	}
 
-	private void OnWeaponAmmoChange(int ammo, int oldAmmo, int maxAmmo)
+	public void OnPlayerHealthChange(int health, int _, int maxHealth)
 	{
-		_currentAmmo.Text = ammo.ToString();
-		_maxAmmo.Text = maxAmmo.ToString();
+		_playerInfo.SetHealth(health, maxHealth);
+	}
+
+	public void OnWeaponAmmoChange(int ammo, int _, int maxAmmo)
+	{
+		_playerInfo.SetAmmo(ammo, maxAmmo);
 	}
 
 	private void OnWeaponStability(double stability)
